@@ -74,11 +74,13 @@ Contoh ini menggunakan skenario ilustrasi, tanpa data peminjam sekolah.
 | **📦 Peminjaman satu atau beberapa unit** | Catat satu unit atau kelompok unit untuk peminjam yang sama, termasuk pengembalian unit secara bertahap. |
 | **✅ Checklist serah terima** | Kelola kelengkapan bawaan, tambahkan pendamping saat transaksi, dan tindak lanjuti kelengkapan yang belum kembali. |
 | **🔧 Kerusakan dan penanganan** | Catat laporan kerusakan, tindakan penanganan, dan perubahan kondisi sebagai bagian dari riwayat barang. |
-| **📊 Dasbor dan laporan** | Pantau status barang serta tugas yang perlu ditindaklanjuti; buat laporan PDF dengan logo dan kop sekolah yang dapat disesuaikan. |
+| **📊 Dasbor dan laporan** | Pantau status barang serta tugas yang perlu ditindaklanjuti; buat laporan PDF dengan logo dan kop sekolah yang ukuran font serta ketebalannya dapat diatur per baris. |
 | **🔎 Pencarian dan jejak aktivitas** | Cari barang/transaksi dan telusuri aktivitas pengguna untuk membantu pemeriksaan data. |
 | **⚙️ Referensi yang dapat dikelola** | Admin mengatur kategori barang, lokasi penyimpanan, akun, dan data guru/siswa. |
+| **👥 Pembuatan akun massal** | Buat akun guru/siswa sesuai filter secara bertahap, pantau progres, jeda/lanjutkan, dan unduh daftar akun baru. Akun yang sudah ada dilewati. |
 
-Fitur di atas mengacu pada source dan rilis beta yang tersedia di repositori ini.
+Fitur di atas mengikuti source pada branch `main`. Source dapat memuat pembaruan
+yang belum masuk ke installer pada halaman Releases.
 
 ## Pengguna dan perannya
 

@@ -100,6 +100,7 @@ $routes->group('admin', ['filter' => ['auth', 'role:admin']], static function ($
     $routes->get('users', 'Admin\Users::index');
     $routes->post('users/store', 'Admin\Users::store');
     $routes->post('users/generate-borrowers', 'Admin\Users::generateBorrowers');
+    $routes->post('users/generate-borrowers-batch', 'Admin\Users::generateBorrowersBatch');
     $routes->post('users/(:num)/update', 'Admin\Users::update/$1');
     $routes->post('users/(:num)/reset-password', 'Admin\Users::resetPassword/$1');
 $routes->post('users/(:num)/toggle-active', 'Admin\Users::toggleActive/$1');

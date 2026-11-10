@@ -18,8 +18,21 @@ final class SchoolLetterhead
         'letterhead_government_size' => ['Ukuran tulisan pemerintah (pt)', 14, 9, 18],
         'letterhead_school_size' => ['Ukuran nama sekolah (pt)', 12, 9, 18],
         'letterhead_detail_size' => ['Ukuran keterangan (pt)', 8.5, 7, 12],
+        'letterhead_department_size' => ['Ukuran font baris 2 (pt)', 14, 9, 18],
+        'letterhead_accreditation_size' => ['Ukuran font baris 4 (pt)', 8.5, 7, 12],
+        'letterhead_contact_size' => ['Ukuran font baris 5 (pt)', 8.5, 7, 12],
+        'letterhead_website_size' => ['Ukuran font baris 6 (pt)', 9, 7.5, 12.5],
         'letterhead_city_height' => ['Tinggi logo daerah (px)', 88, 40, 120],
         'letterhead_school_height' => ['Tinggi logo sekolah (px)', 98, 40, 120],
+    ];
+    /** Existing text keys remain stable so saved letterheads do not need a migration. */
+    public const LINES = [
+        'letterhead_government' => ['letterhead_government_size', 1],
+        'letterhead_department' => ['letterhead_department_size', 1],
+        'letterhead_school_name' => ['letterhead_school_size', 1],
+        'letterhead_accreditation' => ['letterhead_accreditation_size', 0],
+        'letterhead_contact' => ['letterhead_contact_size', 0],
+        'letterhead_website' => ['letterhead_website_size', 0],
     ];
     public const LOGOS = ['letterhead_city_logo' => 'city.png', 'letterhead_school_logo' => 'school.png'];
 
@@ -33,6 +46,15 @@ final class SchoolLetterhead
         foreach (self::SIZES as $key => $field) {
             $size = is_numeric($settings[$key] ?? null) ? (float) $settings[$key] : $field[1];
             $values[$key] = max($field[2], min($field[3], $size));
+        }
+        foreach (['letterhead_department_size' => ['letterhead_government_size', 0],
+            'letterhead_accreditation_size' => ['letterhead_detail_size', 0],
+            'letterhead_contact_size' => ['letterhead_detail_size', 0],
+            'letterhead_website_size' => ['letterhead_detail_size', 0.5]] as $key => [$legacyKey, $offset]) {
+            if (! array_key_exists($key, $settings)) $values[$key] = $values[$legacyKey] + $offset;
+        }
+        foreach (self::LINES as $key => [$sizeKey, $defaultBold]) {
+            $values[$key . '_bold'] = (string) ($settings[$key . '_bold'] ?? $defaultBold) === '1' ? 1 : 0;
         }
         foreach (self::LOGOS as $key => $default) $values[$key] = (string) ($settings[$key] ?? '');
         return $values;

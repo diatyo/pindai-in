@@ -19,10 +19,6 @@ foreach (\App\Libraries\SchoolLetterhead::LOGOS as $key => $default) {
 .school-letterhead .letterhead-detail{font-size:<?= (float) $letterhead['letterhead_detail_size'] ?>pt;line-height:1.2;font-weight:normal}
 .school-letterhead .letterhead-website{font-size:<?= (float) $letterhead['letterhead_detail_size'] + 0.5 ?>pt;line-height:1.2;font-weight:normal}
 .school-letterhead-print-only{display:none}
-.school-letterhead-print-only .letterhead-government{font-size:12pt}
-.school-letterhead-print-only .letterhead-name{font-size:10pt}
-.school-letterhead-print-only .letterhead-detail{font-size:7pt}
-.school-letterhead-print-only .letterhead-website{font-size:8pt}
 .school-letterhead-print-only .letterhead-city{width:auto;height:72px}
 .school-letterhead-print-only .letterhead-school{width:auto;height:80px}
 @media print{.school-letterhead-print-only{display:block}.school-letterhead{-webkit-print-color-adjust:exact;print-color-adjust:exact}.mobile-list,.pagination,.modal{display:none!important}.table-wrap{display:block!important;overflow:visible!important}.table{min-width:0!important}}
@@ -32,7 +28,8 @@ foreach (\App\Libraries\SchoolLetterhead::LOGOS as $key => $default) {
     <td class="letterhead-logo" style="width:12%"><?php if ($logos['letterhead_city_logo']): ?><img class="letterhead-city" src="<?= esc($logos['letterhead_city_logo'], 'attr') ?>" alt="Logo daerah"><?php endif; ?></td>
     <td class="letterhead-copy" style="width:76%">
       <?php foreach (['government' => 'government', 'department' => 'government', 'school_name' => 'name', 'accreditation' => 'detail', 'contact' => 'detail', 'website' => 'website'] as $key => $class): ?>
-        <?php if ($letterhead['letterhead_' . $key] !== ''): ?><div class="letterhead-<?= $class ?>"><?= nl2br(esc($letterhead['letterhead_' . $key])) ?></div><?php endif; ?>
+        <?php $textKey = 'letterhead_' . $key; [$sizeKey] = \App\Libraries\SchoolLetterhead::LINES[$textKey]; ?>
+        <?php if ($letterhead[$textKey] !== ''): ?><div class="letterhead-<?= $class ?>" data-letterhead-line="<?= esc($textKey, 'attr') ?>" style="font-size:<?= (float) $letterhead[$sizeKey] ?>pt;font-weight:<?= $letterhead[$textKey . '_bold'] ? '700' : '400' ?>"><?= nl2br(esc($letterhead[$textKey])) ?></div><?php endif; ?>
       <?php endforeach; ?>
     </td>
     <td class="letterhead-logo" style="width:12%"><?php if ($logos['letterhead_school_logo']): ?><img class="letterhead-school" src="<?= esc($logos['letterhead_school_logo'], 'attr') ?>" alt="Logo sekolah"><?php endif; ?></td>

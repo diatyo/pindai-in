@@ -8,4 +8,14 @@
 .import-drop:hover,.import-drop:focus-visible,.import-drop.is-dragging{border-color:var(--gold);background:rgba(250,233,194,.58);outline:0}.import-drop.is-dragging{transform:scale(1.01);box-shadow:0 0 0 4px rgba(201,154,66,.13)}
 .import-file-input{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;opacity:0!important;cursor:pointer}
 .import-drop>*:not(.import-file-input){pointer-events:none}.import-drop-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--gold);color:var(--brown-2);font-size:24px;font-weight:800}.import-drop>b{color:var(--ink);font:800 15px/1.25 Nunito,sans-serif}.import-drop .muted{font-size:13px}.import-drop small{color:var(--muted);font-size:12px}.import-file-meta{min-height:18px;color:var(--sage);font-size:12px;font-weight:700}
-.import-drop.has-file{border-style:solid;border-color:var(--sage);background:rgba(222,239,226,.56)}.import-drop.has-file .import-drop-icon{background:var(--sage);color:#fff}.import-drop.has-error{border-color:var(--red);background:rgba(250,224,219,.6)}.import-drop.has-error .import-drop-icon{background:var(--red);color:#fff}.import-drop.has-error .import-file-meta{color:var(--red)}
+.import-drop.has-file{border-style:solid;border-color:var(--sage);background:rgba(222,239,226,.56)}.import-drop.has-file .import-drop-icon{background:var(--sage);color:#fff}.import-drop.has-error{border-color:var(--red);background:rgba(250,224,219,.6)}.import-drop.has-error .import-drop-icon{background:var(--red);color:#fff}.import-drop.has-error .import-file-meta{color:var(--red)}/* Account batches: scoped to the generator dialog. */
+#borrowerGeneratorModal .borrower-generator-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#borrowerGeneratorModal .borrower-generator-actions .btn{min-height:44px;white-space:normal;text-align:center}
+#borrowerGeneratorProgress[hidden],#borrowerGeneratorModal [hidden]{display:none!important}
+#borrowerGeneratorProgress{padding:16px;margin-top:18px;border:1px solid var(--line);border-radius:14px;background:var(--gold-soft)}
+#borrowerGeneratorProgress>p{margin:0 0 10px}
+#borrowerGeneratorMeter{display:block;width:100%;height:12px;margin:12px 0;accent-color:var(--brown)}
+#borrowerGeneratorProgress small{display:block;margin-top:14px;line-height:1.6}
+#borrowerGeneratorSkipped{margin-top:14px}
+#borrowerGeneratorSkipped ul{max-height:180px;overflow:auto;padding-left:20px}
+@media(max-width:600px){#borrowerGeneratorModal .borrower-generator-actions .btn{flex:1 1 140px}}

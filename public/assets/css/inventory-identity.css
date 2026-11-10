@@ -30,6 +30,14 @@
   #items .toolbar-actions .btn{padding-inline:10px;font-size:12px}
 }
 .item-unit-code{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+#loanDetail .loan-detail-identity{min-width:0;padding:0 0 18px;margin-bottom:2px;border-bottom:1px solid var(--line);text-align:left}
+#loanDetail .loan-detail-identity>span{font-size:13px;line-height:1.5}
+#loanDetail .loan-detail-identity h2{margin:6px 0 8px;font:800 clamp(21px,2.4vw,26px)/1.35 Nunito,sans-serif;overflow-wrap:anywhere;text-wrap:pretty}
+#loanDetail .loan-detail-identity h2 a{color:var(--ink);text-decoration:none}
+#loanDetail .loan-detail-identity h2 a:hover{text-decoration:underline;text-underline-offset:4px}
+#loanDetail .loan-detail-identity h2 a:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:3px}
+#loanDetail .loan-detail-identity p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+#loanDetail .loan-detail-code{display:inline-block;font-weight:700;white-space:nowrap}
 /* Full-width identity on the detail-to-return path for portrait tablets. */
 #loanSuccess{text-align:center}
 #loanSuccess .transaction-success-mark{display:grid;place-items:center;width:56px;height:56px;margin:20px auto 14px;border-radius:50%;background:#d5eadb;color:#173f27;font-size:30px}
@@ -47,11 +55,6 @@
   #loanSuccess .kv{grid-template-columns:minmax(0,1fr);gap:4px}
 }
 @media screen and (min-width:600px) and (max-width:1023px) and (orientation:portrait){
-  .petugas-app #loanDetail>.card>.kv:first-child{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
-  .petugas-app #loanDetail>.card>.kv:first-child>b{min-width:0;width:100%;text-align:left}
-  .petugas-app #loanDetail>.card>.kv:first-child .link{display:block;min-height:0;padding:0;font:800 20px/1.4 Nunito,sans-serif;word-break:normal;overflow-wrap:break-word}
-  .petugas-app #loanDetail>.card>.kv:first-child br{display:none}
-  .petugas-app #loanDetail>.card>.kv:first-child small{display:block;margin-top:6px;font-size:13px}
   .petugas-app .page:has(>#loanReturnForm)>article.card>h3{display:block;width:100%;min-width:0;margin:0 0 8px;font:800 20px/1.4 Nunito,sans-serif;word-break:normal;overflow-wrap:break-word;text-wrap:pretty}
   .petugas-app .page:has(>#loanReturnForm)>article.card>.kv{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px}
   .petugas-app .page:has(>#loanReturnForm)>article.card>.kv>b{min-width:0;overflow-wrap:break-word}

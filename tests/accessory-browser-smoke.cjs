@@ -716,7 +716,7 @@ const ok = (value, message) => { assert.ok(value, message); checks++; };
     await page.locator('[name=accessory_return_confirmed]').check();
     await peer.goto(fixture.peerURL + '/petugas/damages/create/' + operators[1].itemId);
     await peer.locator('[name=damage_level]').selectOption('minor_damage');
-    await peer.locator('[name=description]').fill('Laporan manual paralel dengan pengembalian.');
+    await peer.locator('textarea[name=description]').fill('Laporan manual paralel dengan pengembalian.');
     await Promise.all([
       submit(page, 'Konfirmasi Pengembalian', /\/petugas\/damages\/\d+$/),
       Promise.all([peer.waitForURL(/\/petugas\/damages\/\d+$/), peer.locator('form[action*="/damages/store"] button[type=submit]').click()]),

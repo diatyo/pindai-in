@@ -11,6 +11,10 @@ Options -Indexes
 	Options +FollowSymlinks
 	RewriteEngine On
 
+	# Deployment pause: remove public_html/.pindai-maintenance when ready.
+	RewriteCond %{DOCUMENT_ROOT}/.pindai-maintenance -f
+	RewriteRule ^ - [R=503,L]
+
 	# Stored photos must pass the app's authorization, including legacy files.
 	RewriteRule ^(uploads/.*)$ index.php/$1 [L,NC]
 

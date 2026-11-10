@@ -167,11 +167,11 @@ $tabUrl = static fn (string $target): string => base_url('/admin/users?tab=' . $
   </div>
 </div>
 
-<div class="modal" id="borrowerGeneratorModal">
+<div class="modal" id="borrowerGeneratorModal" role="dialog" aria-modal="true" aria-labelledby="borrowerGeneratorTitle">
   <div class="modal-box" style="max-width:720px">
-    <span class="eyebrow">Akun peminjam</span><h2>Generate Akun Guru/Siswa</h2>
-    <p class="muted">Username awal memakai NIP untuk guru atau NISN untuk siswa. Password acak hanya ditampilkan sekali dan wajib diganti saat masuk pertama.</p>
-    <form method="post" action="<?= base_url('/admin/users/generate-borrowers') ?>" id="borrowerGeneratorForm">
+    <span class="eyebrow">Akun peminjam</span><h2 id="borrowerGeneratorTitle">Generate Akun Guru/Siswa</h2>
+    <p class="muted">Username dan kata sandi awal mengikuti NIP/NISN. Pengguna wajib mengganti kata sandi saat pertama masuk. Akun yang sudah ada tidak diubah.</p>
+    <form method="post" action="<?= base_url('/admin/users/generate-borrowers') ?>" id="borrowerGeneratorForm" data-batch-url="<?= esc(base_url('/admin/users/generate-borrowers-batch'), 'attr') ?>">
       <?= csrf_field() ?>
       <div class="tabs" style="margin:12px 0"><button class="tab active" type="button" data-type-filter="all">Semua</button><button class="tab" type="button" data-type-filter="teacher">Guru</button><button class="tab" type="button" data-type-filter="student">Siswa</button></div>
       <label class="remember" style="margin:0 0 10px"><input type="checkbox" id="selectAllBorrowers"> Pilih semua yang tampil</label>
@@ -186,7 +186,16 @@ $tabUrl = static fn (string $target): string => base_url('/admin/users?tab=' . $
           <?php if (! $borrowers): ?><tr><td colspan="5" class="muted">Tidak ada data guru/siswa aktif.</td></tr><?php endif; ?>
         </tbody></table>
       </div>
-      <div class="row" style="margin-top:16px"><button class="btn" type="button" data-close>Batal</button><button class="btn gold" type="submit">Generate akun terpilih</button></div>
+      <p class="muted" id="borrowerGeneratorSelection">Pilih data atau langsung buat semua akun sesuai filter.</p>
+      <div class="borrower-generator-actions"><button class="btn" type="button" data-close>Tutup</button><button class="btn" type="submit" id="generateSelectedBorrowers">Generate terpilih</button><button class="btn gold" type="button" id="generateAllBorrowers">Generate semua</button></div>
+      <section class="borrower-generator-progress" id="borrowerGeneratorProgress" aria-label="Progres pembuatan akun" hidden>
+        <p role="status" aria-live="polite" id="borrowerGeneratorStatus"></p>
+        <progress id="borrowerGeneratorMeter" value="0" max="1" aria-label="Data diproses"></progress>
+        <p class="muted" id="borrowerGeneratorCounts"></p>
+        <div class="borrower-generator-actions"><button class="btn" type="button" id="pauseBorrowerGenerator">Jeda setelah bagian ini</button><button class="btn gold" type="button" id="resumeBorrowerGenerator" hidden>Lanjutkan</button><button class="btn" type="button" id="downloadBorrowerAccounts" hidden>Unduh daftar akun (CSV)</button><a class="btn" href="<?= base_url('/admin/users?tab=peminjam') ?>" id="finishBorrowerGenerator" hidden>Selesai &amp; muat ulang</a></div>
+        <details id="borrowerGeneratorSkipped" hidden><summary>Data yang dilewati</summary><ul></ul></details>
+        <small class="muted">Akun diproses bertahap. Biarkan halaman ini terbuka hingga selesai. Jika halaman terlanjur ditutup, jalankan kembali; akun yang sudah berhasil dibuat tetap tersimpan.</small>
+      </section>
     </form>
   </div>
 </div>
@@ -251,11 +260,6 @@ function openEditUser(user) {
   modal('editUserModal', true);
 }
 function copyText(id) { const field = document.getElementById(id); field.select(); if (navigator.clipboard) { navigator.clipboard.writeText(field.value).catch(function () { document.execCommand('copy'); }); } else { document.execCommand('copy'); } toast('Berhasil disalin'); }
-const filterButtons = document.querySelectorAll('[data-type-filter]');
-const borrowerRows = document.querySelectorAll('#borrowerGeneratorTable tbody tr[data-borrower-type]');
-filterButtons.forEach(function (button) { button.addEventListener('click', function () { filterButtons.forEach(function (item) { item.classList.remove('active'); }); button.classList.add('active'); borrowerRows.forEach(function (row) { row.hidden = button.dataset.typeFilter !== 'all' && row.dataset.borrowerType !== button.dataset.typeFilter; }); document.getElementById('selectAllBorrowers').checked = false; }); });
-document.getElementById('selectAllBorrowers').addEventListener('change', function () { borrowerRows.forEach(function (row) { const checkbox = row.querySelector('input[type="checkbox"]'); if (checkbox && !checkbox.disabled && !row.hidden) { checkbox.checked = this.checked; } }, this); });
-document.getElementById('borrowerGeneratorForm').addEventListener('submit', function (event) { if (!this.querySelector('input[name="borrower_ids[]"]:checked')) { event.preventDefault(); toast('Pilih minimal satu guru atau siswa'); } });
 <?php if (is_array($temporaryPassword)): ?>
 document.addEventListener('DOMContentLoaded', function () { modal('temporaryPasswordModal', true); });
 <?php endif; ?>
@@ -264,4 +268,5 @@ document.addEventListener('DOMContentLoaded', function () { modal('generatedCred
 function copyGeneratedCredentials() { const rows = <?= json_encode($generatedCredentials, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>; const text = rows.map(function (row) { return row.name + ' | ' + row.type + ' | ' + row.username + ' | ' + row.password; }).join('\n'); if (navigator.clipboard) { navigator.clipboard.writeText(text).then(function () { toast('Daftar kredensial berhasil disalin'); }).catch(function () { toast('Salin manual daftar kredensial'); }); } else { toast('Salin manual daftar kredensial'); } }
 <?php endif; ?>
 </script>
+<script src="<?= base_url('assets/js/borrower-generator.js') ?>?v=<?= filemtime(FCPATH . 'assets/js/borrower-generator.js') ?>"></script>
 <?= view('layouts/footer') ?>

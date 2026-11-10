@@ -24,7 +24,11 @@
   </div>
 
   <article class="card mt-18">
-    <div class="kv"><span>Unit</span><b><a class="link" href="<?= esc($itemDetailUrl, 'attr') ?>"><?= esc($loan->item_name) ?></a><br><small class="muted"><?= esc($loan->item_code) ?></small></b></div>
+    <div class="loan-detail-identity">
+      <span class="muted">Barang dipinjam</span>
+      <h2><a href="<?= esc($itemDetailUrl, 'attr') ?>"><?= esc($loan->item_name) ?></a></h2>
+      <p>Kode unit <span aria-hidden="true">·</span> <span class="loan-detail-code"><?= esc($loan->item_code) ?></span></p>
+    </div>
     <div class="kv"><span>Peminjam</span><b><?= esc($loan->borrower_name) ?> · <?= $loan->borrower_type === 'teacher' ? 'Guru' : 'Siswa' ?></b></div>
     <div class="kv"><span>Identitas</span><b><?= esc($loan->identity_number ?? '—') ?></b></div>
     <div class="kv"><span>Tanggal pinjam</span><b><?= esc(tgl_id($loan->borrowed_at, true)) ?></b></div>

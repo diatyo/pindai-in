@@ -16,6 +16,31 @@ const fixture = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
     await Promise.all([page.waitForURL(/admin/), page.locator('button[type=submit]').click()]);
     await page.goto(fixture.baseURL + '/admin/settings');
     const form = page.locator('#settings form');
+    const phone = form.locator('[name=school_phone]');
+    for (const value of ['', '(0771) 21720', '0771-21720', '+62 771 21720', '077121720']) {
+      await phone.fill(value);
+      assert.equal(await phone.inputValue(), value, 'Telephone formatting must not be stripped.');
+      assert(await phone.evaluate(input => input.checkValidity()), 'Telephone format should be accepted: ' + value);
+    }
+    await phone.fill('nomor tidak valid');
+    assert.match(await phone.evaluate(input => input.validationMessage), /^Gunakan angka/);
+    const phoneCsrf = await page.evaluate(() => ({name:document.querySelector('meta[name=csrf-name]').content, value:document.querySelector('meta[name=csrf-token]').content}));
+    const invalidPhone = await context.request.post(fixture.baseURL + '/admin/settings/preview', {
+      form:{[phoneCsrf.name]:phoneCsrf.value,school_phone:'nomor tidak valid'},headers:{'X-Requested-With':'XMLHttpRequest'}
+    });
+    assert.equal(invalidPhone.status(),422);
+    assert.match((await invalidPhone.json()).message,/Format telepon sekolah tidak valid/);
+    await page.evaluate(({name,token}) => {
+      document.getElementsByName(name).forEach(input => {input.value=token;});
+      document.querySelector('meta[name=csrf-token]').content=token;
+    },{name:phoneCsrf.name,token:invalidPhone.headers()['x-csrf-token']});
+    await phone.fill('(0771) 21720');
+    assert.equal(await form.locator('[data-letterhead-editor-row]').count(),6);
+    await form.locator('[name=letterhead_government_bold][type=checkbox]').uncheck();
+    await form.locator('[name=letterhead_contact_bold][type=checkbox]').check();
+    await form.locator('[name=letterhead_government_size]').fill('12.5');
+    await form.locator('[name=letterhead_department_size]').fill('15');
+    await form.locator('[name=letterhead_contact_size]').fill('10');
     const originalGovernment = await form.locator('[name=letterhead_government]').inputValue();
     for (const [key, value] of Object.entries({letterhead_government:'PEMERINTAH KOTA UJI & BUDAYA', letterhead_department:'DINAS PENDIDIKAN DAN KEBUDAYAAN', letterhead_school_name:'SMP NEGERI UJI KEPULAUAN RIAU', kepala_sekolah_name:'Kepala Sekolah Uji', kepala_sekolah_nip:'123456789012345678', letterhead_contact:'Jalan Pendidikan Nomor 123, Tanjungpinang\nTelepon (0771) 12345 · Email sekolah@example.test'})) {
       await form.locator('[name=' + key + ']').fill(value);
@@ -41,6 +66,14 @@ const fixture = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
     await form.getByRole('button',{name:'Simpan Konfigurasi',exact:true}).click();
     await page.getByText('Konfigurasi sistem berhasil disimpan.',{exact:true}).waitFor();
     assert.equal(await form.locator('[name=letterhead_government]').inputValue(),'PEMERINTAH KOTA UJI & BUDAYA');
+    assert.equal(await phone.inputValue(),'(0771) 21720', 'Formatted phone must survive saving and reloading.');
+    assert(!(await form.locator('[name=letterhead_government_bold][type=checkbox]').isChecked()));
+    assert(await form.locator('[name=letterhead_contact_bold][type=checkbox]').isChecked());
+    assert.equal(await form.locator('[name=letterhead_department_size]').inputValue(),'15');
+    assert.equal(await form.locator('[name=letterhead_government_size]').inputValue(),'12.5');
+    assert.equal(await form.locator('[name=letterhead_contact_size]').inputValue(),'10');
+    assert.equal(await form.locator('[name=letterhead_government]').evaluate(input => getComputedStyle(input).fontWeight),'400');
+    assert.equal(await form.locator('[name=letterhead_contact]').evaluate(input => getComputedStyle(input).fontWeight),'700');
     for (const width of [1366,800,390]) {
       await page.setViewportSize({width,height:1000});
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
@@ -71,6 +104,6 @@ const fixture = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
     const denied = await staffContext.request.post(fixture.baseURL + '/admin/settings/preview',{form:{[csrf.name]:csrf.value}});
     assert(!denied.headers()['content-type']?.includes('application/pdf'));
     await staffContext.close();
-    console.log('PASS PDF preview preserves settings, both uploaded logos save, report uses saved identity, invalid logo is rejected, reset and admin-only access.');
+    console.log('PASS six editable letterhead rows, individual font sizes/bold saved and applied in reports, formatted telephone input/save, Indonesian client/server validation, PDF preview, uploaded logos, reset and admin-only access.');
   } finally { await browser.close(); }
 })().catch(error => {console.error(error);process.exitCode=1;});

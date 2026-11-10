@@ -144,6 +144,23 @@ class Users extends BaseController
         });
     }
 
+    public function generateBorrowersBatch()
+    {
+        $this->response->setHeader('Cache-Control', 'no-store, private');
+        $ids = $this->request->getPost('borrower_ids');
+        if (! is_array($ids) || ! $ids || count($ids) > \App\Libraries\BorrowerAccountGenerator::BATCH_SIZE
+            || array_filter($ids, static fn ($id) => ! is_scalar($id) || ! ctype_digit((string) $id) || (int) $id < 1)) {
+            return $this->response->setStatusCode(422)->setJSON(['message' => 'Daftar peminjam tidak valid. Maksimal 20 data per permintaan.', 'csrf' => csrf_hash()]);
+        }
+        try {
+            $result = (new \App\Libraries\BorrowerAccountGenerator(\Config\Database::connect()))->generate($ids);
+            return $this->response->setJSON($result + ['csrf' => csrf_hash()]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Batch pembuatan akun dibatalkan: {message}', ['message' => $e->getMessage()]);
+            return $this->response->setStatusCode(500)->setJSON(['message' => 'Bagian ini belum tersimpan. Coba lanjutkan; akun yang sudah ada akan dilewati.', 'csrf' => csrf_hash()]);
+        }
+    }
+
     public function update(int $id)
     {
         return $this->auditedChange(function () use ($id) {

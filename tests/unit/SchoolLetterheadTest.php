@@ -25,6 +25,21 @@ final class SchoolLetterheadTest extends CIUnitTestCase
         self::assertNotNull(SchoolLetterhead::logoFile('logo-' . str_repeat('a', 32) . '.png'));
     }
 
+    public function testRowStylesInheritOldSizesUntilIndividuallyConfigured(): void
+    {
+        $values = SchoolLetterhead::values(['letterhead_government_size' => '16', 'letterhead_detail_size' => '10']);
+        self::assertEquals(16, $values['letterhead_department_size']);
+        self::assertEquals(10, $values['letterhead_contact_size']);
+        self::assertEquals(10.5, $values['letterhead_website_size']);
+        self::assertSame(1, $values['letterhead_government_bold']);
+        self::assertSame(0, $values['letterhead_contact_bold']);
+        $values = SchoolLetterhead::values(['letterhead_government_bold' => '0', 'letterhead_contact_bold' => '1', 'letterhead_department_size' => '15.5']);
+        $html = view('partials/school_letterhead', ['letterhead' => $values, 'logos' => ['letterhead_city_logo' => '', 'letterhead_school_logo' => '']]);
+        self::assertStringContainsString('data-letterhead-line="letterhead_government" style="font-size:14pt;font-weight:400"', $html);
+        self::assertStringContainsString('data-letterhead-line="letterhead_contact" style="font-size:8.5pt;font-weight:700"', $html);
+        self::assertStringContainsString('data-letterhead-line="letterhead_department" style="font-size:15.5pt;font-weight:700"', $html);
+    }
+
     public function testUploadedRasterIsReencodedAsASquareTransparentPng(): void
     {
         $path = tempnam(sys_get_temp_dir(), 'letterhead-test-');

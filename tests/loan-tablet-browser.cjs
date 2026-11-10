@@ -28,7 +28,7 @@ const fixture = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
         await page.setViewportSize({width,height});
         await page.evaluate(() => document.fonts.ready);
         const metrics = await page.locator(selector).evaluate(heading => {
-          heading.textContent = 'KIPAS ANGIN MIYAKO RUANG KELAS VIII.5';
+          (heading.querySelector('a') ?? heading).textContent = 'KIPAS ANGIN MIYAKO RUANG KELAS VIII.5';
           const card = heading.closest('.card');
           const range = document.createRange();
           range.selectNodeContents(heading);
@@ -48,7 +48,11 @@ const fixture = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
     }
     await captureScreens('borrow-success', '#loanSuccess .transaction-item-name');
     await page.goto(fixture.baseURL + '/petugas/loans/' + loanId);
-    await captureScreens('return-detail', '#loanDetail>.card>.kv:first-child .link');
+    await captureScreens('return-detail', '#loanDetail .loan-detail-identity h2');
+    const identity = page.locator('#loanDetail .loan-detail-identity');
+    assert.equal(await identity.locator('.loan-detail-code').innerText(), 'ACC-001');
+    assert.equal(await identity.locator('h2 a').getAttribute('href'), fixture.baseURL + '/petugas/items/1');
+    assert(await identity.locator('.loan-detail-code').evaluate(code => code.getBoundingClientRect().top > code.closest('.loan-detail-identity').querySelector('h2').getBoundingClientRect().bottom), 'The unit code must be on a separate line below the name.');
     await page.getByRole('link', {name: 'Proses Pengembalian', exact: true}).click();
     await captureScreens('return-form', '.page:has(>#loanReturnForm)>article.card>h3');
     await page.locator('[name=accessory_return_confirmed]').check();

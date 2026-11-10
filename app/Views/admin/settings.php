@@ -7,7 +7,7 @@
     <div class="field"><label>Nama sekolah</label><input class="control" name="school_name" value="<?= esc(old('school_name', $settings['school_name'] ?? '', false)) ?>"></div>
     <div class="field"><label>Alamat sekolah</label><input class="control" name="school_address" value="<?= esc(old('school_address', $settings['school_address'] ?? '', false)) ?>"></div>
     <div class="grid2">
-      <div class="field"><label>Telepon sekolah</label><input class="control" name="school_phone" type="text" inputmode="numeric" pattern="[0-9]*" title="Hanya angka (0-9)" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="<?= esc(old('school_phone', $settings['school_phone'] ?? '', false)) ?>"></div>
+      <div class="field"><label for="school_phone">Telepon sekolah</label><input id="school_phone" class="control" name="school_phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" aria-describedby="schoolPhoneHelp" value="<?= esc(old('school_phone', $settings['school_phone'] ?? '', false)) ?>"><small class="muted" id="schoolPhoneHelp">Contoh: (0771) 21720 atau +62 771 21720.</small></div>
       <div class="field"><label>Nama Kepala Sekolah</label><input class="control" name="kepala_sekolah_name" value="<?= esc(old('kepala_sekolah_name', $settings['kepala_sekolah_name'] ?? '', false)) ?>"></div>
     </div>
     <div class="field"><label for="kepala_sekolah_nip">NIP Kepala Sekolah</label><input id="kepala_sekolah_nip" class="control" name="kepala_sekolah_nip" type="text" inputmode="numeric" pattern="[0-9]*" title="Hanya angka (0-9)" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="<?= esc(old('kepala_sekolah_nip', $settings['kepala_sekolah_nip'] ?? '', false)) ?>"></div>
@@ -28,12 +28,24 @@
     </section>
     <section class="school-branding-section" aria-labelledby="letterheadHeading">
       <h2 id="letterheadHeading">Isi kop laporan PDF</h2>
-      <p class="muted">Sesuaikan nama instansi dan identitas resmi sekolah. Baris keterangan yang dikosongkan akan disembunyikan pada kop.</p>
-      <?php foreach (\App\Libraries\SchoolLetterhead::TEXT as $key => $field): ?>
-      <div class="field"><label for="<?= $key ?>"><?= esc($field[0]) ?></label><textarea class="control" name="<?= $key ?>" id="<?= $key ?>" maxlength="<?= $field[2] ?>" rows="<?= in_array($key, ['letterhead_contact', 'letterhead_accreditation'], true) ? 2 : 1 ?>"><?= esc(old($key, $letterhead[$key], false)) ?></textarea></div>
+      <p class="muted">Isi kop sesuai urutan cetaknya. Atur ukuran font dan teks tebal untuk setiap baris. Baris yang dikosongkan tidak ditampilkan.</p>
+      <?php $lineNumber = 0; foreach (\App\Libraries\SchoolLetterhead::TEXT as $key => $field): ?>
+      <?php $lineNumber++; [$sizeKey] = \App\Libraries\SchoolLetterhead::LINES[$key]; $sizeField = \App\Libraries\SchoolLetterhead::SIZES[$sizeKey]; $boldKey = $key . '_bold'; ?>
+      <div class="field letterhead-editor-row" data-letterhead-editor-row>
+        <div class="letterhead-row-head">
+          <label for="<?= $key ?>">Baris <?= $lineNumber ?></label>
+          <div class="letterhead-row-controls">
+            <div class="letterhead-font-control"><label for="<?= $sizeKey ?>">Ukuran font</label><input class="control" type="number" name="<?= $sizeKey ?>" id="<?= $sizeKey ?>" min="<?= $sizeField[2] ?>" max="<?= $sizeField[3] ?>" step="0.5" required aria-label="Ukuran font baris <?= $lineNumber ?>" value="<?= esc(old($sizeKey, (string) $letterhead[$sizeKey], false), 'attr') ?>"><span class="muted">pt</span></div>
+            <input type="hidden" name="<?= $boldKey ?>" value="0">
+            <label class="letterhead-bold-control"><input type="checkbox" name="<?= $boldKey ?>" value="1" aria-label="Tebal baris <?= $lineNumber ?>" <?= (string) old($boldKey, (string) $letterhead[$boldKey], false) === '1' ? 'checked' : '' ?>><span>Tebal</span></label>
+          </div>
+        </div>
+        <textarea class="control" name="<?= $key ?>" id="<?= $key ?>" maxlength="<?= $field[2] ?>" rows="<?= in_array($key, ['letterhead_contact', 'letterhead_accreditation'], true) ? 2 : 1 ?>"><?= esc(old($key, $letterhead[$key], false)) ?></textarea>
+      </div>
       <?php endforeach; ?>
-      <details class="school-letterhead-sizes"><summary>Ukuran tulisan dan logo</summary><div class="grid2">
+      <details class="school-letterhead-sizes"><summary>Ukuran logo</summary><div class="grid2">
         <?php foreach (\App\Libraries\SchoolLetterhead::SIZES as $key => $field): ?>
+        <?php if (! in_array($key, ['letterhead_city_height', 'letterhead_school_height'], true)) continue; ?>
         <div class="field"><label for="<?= $key ?>"><?= esc($field[0]) ?></label><input class="control" type="number" name="<?= $key ?>" id="<?= $key ?>" min="<?= $field[2] ?>" max="<?= $field[3] ?>" step="0.5" required value="<?= esc(old($key, (string) $letterhead[$key], false), 'attr') ?>"></div>
         <?php endforeach; ?>
       </div></details>
@@ -58,6 +70,16 @@
 #settings .school-logo-field input[type=file]{max-width:100%;font-size:13px;padding:10px}
 #settings .school-logo-reset{display:flex;align-items:center;gap:8px;margin-top:12px;min-height:44px;font-size:13px}
 #settings .school-logo-reset input{width:18px;height:18px;flex:none}
+#settings .letterhead-editor-row{margin:0 0 18px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+#settings .letterhead-row-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 16px;margin-bottom:8px}
+#settings .letterhead-row-head>label{margin:0;font-weight:700}
+#settings .letterhead-row-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
+#settings .letterhead-font-control{display:flex;align-items:center;gap:7px}
+#settings .letterhead-font-control>label{margin:0;font-size:12px;font-weight:500}
+#settings .letterhead-font-control input{width:76px;min-height:44px;padding:8px;font-size:16px}
+#settings .letterhead-bold-control{display:flex;align-items:center;gap:8px;min-height:44px;margin:0;cursor:pointer;font-size:13px;font-weight:700}
+#settings .letterhead-bold-control input{width:18px;height:18px;margin:0;accent-color:var(--brown)}
+#settings .letterhead-editor-row textarea{resize:vertical;min-height:50px}
 #settings .school-letterhead-sizes summary{min-height:44px;cursor:pointer;font-weight:700;margin-bottom:12px}
 #settings .school-branding-note{font-size:13px;line-height:1.6;margin:20px 0 14px}
 #settings .school-settings-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -67,6 +89,40 @@
 @media(max-width:600px){#settings .school-logo-grid,#settings .school-settings-actions{grid-template-columns:minmax(0,1fr)}}
 </style>
 <script>
+document.querySelectorAll('[data-letterhead-editor-row]').forEach(row => {
+  const bold = row.querySelector('input[type=checkbox]');
+  const text = row.querySelector('textarea');
+  const applyWeight = () => { text.style.fontWeight = bold.checked ? '700' : '400'; };
+  bold.addEventListener('change', applyWeight);
+  applyWeight();
+});
+document.querySelectorAll('#settings input[type=number]').forEach(input => {
+  const validate = () => {
+    input.setCustomValidity('');
+    const label = input.getAttribute('aria-label') || input.labels[0].textContent;
+    if (input.validity.badInput) input.setCustomValidity(label + ' harus berupa angka.');
+    else if (input.validity.valueMissing) input.setCustomValidity(label + ' wajib diisi.');
+    else if (input.validity.rangeUnderflow || input.validity.rangeOverflow) input.setCustomValidity(label + ' harus antara ' + input.min + ' dan ' + input.max + '.');
+    else if (input.validity.stepMismatch) input.setCustomValidity('Gunakan ukuran dengan kelipatan 0,5.');
+  };
+  input.addEventListener('input', validate);
+  validate();
+});
+const schoolPhone = document.getElementById('school_phone');
+const principalNip = document.getElementById('kepala_sekolah_nip');
+function validateSchoolPhone() {
+  const value = schoolPhone.value;
+  schoolPhone.setCustomValidity(value.length > 40 ? 'Telepon sekolah maksimal 40 karakter.'
+    : value !== '' && !/^(?=.*[0-9])\+?[0-9() -]+$/.test(value)
+      ? 'Gunakan angka, spasi, tanda kurung, tanda hubung, atau tanda + di awal. Contoh: (0771) 21720.' : '');
+}
+function validatePrincipalNip() {
+  principalNip.setCustomValidity(/^[0-9]*$/.test(principalNip.value) ? '' : 'NIP Kepala Sekolah hanya boleh berisi angka (0–9).');
+}
+schoolPhone.addEventListener('input', validateSchoolPhone);
+principalNip.addEventListener('input', validatePrincipalNip);
+validateSchoolPhone();
+validatePrincipalNip();
 const previewButton = document.getElementById('previewLetterhead');
 previewButton.form.addEventListener('submit', async event => {
   if (event.submitter !== previewButton) return;

@@ -91,7 +91,7 @@ try {
     foreach ($fixtureQrs as $path) {
         if (is_file($path)) { throw new RuntimeException('QR test path already exists.'); }
     }
-    $startServer = static function (string $log) use ($root, $run, $name, &$servers): string {
+    $startServer = static function (string $log) use ($root, $run, $name, $config, &$servers): string {
         $socket = stream_socket_server('tcp://127.0.0.1:0', $errno, $error);
         $address = stream_socket_get_name($socket, false);
         fclose($socket);
@@ -99,6 +99,11 @@ try {
         $baseURL = 'http://127.0.0.1:' . $port;
         $overrides = [
             'CI_ENVIRONMENT' => 'production', 'database.default.database' => $name,
+            'database.default.hostname' => (string) $config['hostname'],
+            'database.default.username' => (string) $config['username'],
+            'database.default.password' => (string) $config['password'],
+            'database.default.port' => (string) ($config['port'] ?: 3306),
+            'database.default.DSN' => '', 'database.default.DBPrefix' => '',
             'app.baseURL' => $baseURL . '/', 'app.forceGlobalSecureRequests' => 'false', 'app.autoLocalBaseURL' => 'false',
             'cookie.secure' => 'false', 'cookie.domain' => '', 'session.savePath' => $run . '/session',
         ];
@@ -122,6 +127,17 @@ try {
     };
     $classesOnly = in_array('--classes-only', $argv, true);
     $tabletOnly = in_array('--tablet-only', $argv, true);
+    $accountsOnly = in_array('--accounts-only', $argv, true);
+    if ($accountsOnly) {
+        $students = [];
+        for ($index = 1; $index <= 1005; $index++) {
+            $students[] = ['name' => 'Siswa Massal ' . $index, 'type' => 'student', 'identity_number' => '8833' . str_pad((string) $index, 8, '0', STR_PAD_LEFT), 'class_name' => 'VII.1', 'is_active' => 1];
+        }
+        $db->table('borrowers')->insertBatch($students);
+        for ($index = 1; $index <= 41; $index++) $db->table('borrowers')->insert(['name' => 'Guru Massal ' . $index, 'type' => 'teacher', 'identity_number' => '8822' . str_pad((string) $index, 8, '0', STR_PAD_LEFT), 'is_active' => 1]);
+        $db->table('borrowers')->insert(['name' => 'Siswa nonaktif', 'type' => 'student', 'identity_number' => '883300009999', 'is_active' => 0]);
+        $db->table('users')->insert(['username' => '883300001005', 'full_name' => 'Konflik username uji', 'password_hash' => 'dummy', 'role' => 'petugas', 'is_active' => 1]);
+    }
     if ($classesOnly) {
         foreach ([['VII.5', 1], ['VII.1', 1], ['VIII.1', 1], ['IX.9', 1], ['VIII.99', 0]] as $index => [$class, $active]) {
             $db->table('borrowers')->insert(['name' => 'Siswa kelas ' . $class, 'type' => 'student', 'identity_number' => '123456789' . $index,
@@ -139,11 +155,41 @@ try {
     if ($classesOnly) $browserScript = '/tests/borrower-classes-browser.cjs';
     if ($tabletOnly) $browserScript = '/tests/loan-tablet-browser.cjs';
     if ($letterheadOnly) $browserScript = '/tests/school-letterhead-browser.cjs';
+    if ($accountsOnly) $browserScript = '/tests/borrower-generator-browser.cjs';
     $node = proc_open(['C:/Program Files/nodejs/node.exe', $root . $browserScript, $input],
         [0 => ['pipe', 'r'], 1 => STDOUT, 2 => STDERR], $nodePipes, $root);
     fclose($nodePipes[0]);
     if (proc_close($node) !== 0) { throw new RuntimeException('Browser flow failed; inspect ' . basename($run)); }
-    if ($desktopOnly || $classesOnly || $tabletOnly || $letterheadOnly) {
+    if ($accountsOnly) {
+        $ids = array_map('intval', array_column($db->table('borrowers')->select('id')->where('type', 'student')->where('is_active', 1)->orderBy('id')->get()->getResultArray(), 'id'));
+        $generator = new \App\Libraries\BorrowerAccountGenerator($db, static fn ($password) => password_hash($password, PASSWORD_BCRYPT, ['cost' => 4]));
+        $new = $skippedCount = 0;
+        foreach (array_chunk($ids, 20) as $batch) { $result = $generator->generate($batch); $new += count($result['created']); $skippedCount += count($result['skipped']); }
+        if ($new !== 1004 || $skippedCount !== 1) throw new RuntimeException('1005-student generation did not preserve username conflicts.');
+        foreach (array_chunk($ids, 20) as $batch) {
+            $result = $generator->generate($batch);
+            if ($result['created'] !== [] || count($result['skipped']) !== count($batch)) throw new RuntimeException('Retry duplicated student accounts.');
+        }
+        $sample = $db->table('users')->where('username', '883300000001')->get()->getRow();
+        if (! $sample || ! password_verify($sample->username, $sample->password_hash) || ! $sample->must_change_password) throw new RuntimeException('Initial password/first-login requirement mismatch.');
+        if ($db->table('activity_logs')->where('action', 'akun_peminjam_dibuat')->countAllResults() !== 1045) throw new RuntimeException('Bulk accounts must each have an audit record.');
+        $db->table('borrowers')->insert(['name' => 'Rollback audit uji', 'type' => 'student', 'identity_number' => '883300008888', 'is_active' => 1]);
+        $rollbackId = $db->insertID();
+        $db->query("CREATE TRIGGER fail_test_account_audit BEFORE INSERT ON activity_logs FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Test audit failure'");
+        $auditFailed = false;
+        try { $generator->generate([$rollbackId]); }
+        catch (\Throwable $error) { $auditFailed = true; }
+        if (! $auditFailed || $db->table('users')->where('borrower_id', $rollbackId)->countAllResults()) throw new RuntimeException('Audit failure must reject the account and roll it back.');
+        $db->query('DROP TRIGGER fail_test_account_audit');
+        echo "PASS 1005-student batches, 41-teacher browser flow, existing-account skips, replay, initial passwords, 1045 audit rows and audit failure rollback.\n";
+    } elseif ($letterheadOnly) {
+        helper(['app', 'url']);
+        $report = view('admin/activity_print', ['logs' => [], 'from' => '', 'to' => '']);
+        foreach (['letterhead_government' => '12.5pt;font-weight:400', 'letterhead_department' => '15pt;font-weight:700', 'letterhead_contact' => '10pt;font-weight:700'] as $key => $style) {
+            if (! str_contains($report, 'data-letterhead-line="' . $key . '" style="font-size:' . $style . '"')) throw new RuntimeException('Saved letterhead style not applied to the actual report: ' . $key);
+        }
+        echo "PASS persisted per-line font sizes and bold settings are used by the actual audit report template.\n";
+    } elseif ($desktopOnly || $classesOnly || $tabletOnly) {
         echo "Read-only inventory desktop layout verification OK.\n";
     } elseif ($serialOnly) {
         if ($db->table('items')->where('serial_number', 'SERIAL-1')->countAllResults() !== 3) {
