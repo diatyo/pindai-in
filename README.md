@@ -1,12 +1,13 @@
 # Pindai.in
 
-**SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE**.
-Dikembangkan di SMP Negeri 1 Tanjungpinang oleh Dimas Adi Prasetyo.
-CodeIgniter 4, PHP 8.3+, dan MySQL.
+**Pindai.in** merupakan sistem informasi peminjaman dan monitoring inventaris barang
+berbasis web dengan identifikasi QR Code.
 
-Pengembangan dilakukan oleh **Dimas Adi Prasetyo** dengan bantuan **OpenAI Codex**
-sebagai asisten AI untuk implementasi, penelusuran masalah, peninjauan UI/UX,
-pengujian, dan penyiapan distribusi. Lihat [kontributor](CONTRIBUTORS.md).
+Aplikasi ini dikembangkan di **SMP Negeri 1 Tanjungpinang** oleh
+**Dimas Adi Prasetyo** dengan bantuan **OpenAI Codex** sebagai asisten AI.
+Rincian peran pengembangan tersedia pada [halaman kontributor](CONTRIBUTORS.md).
+
+Pindai.in dibangun menggunakan **CodeIgniter 4**, **PHP 8.3+**, dan **MySQL**.
 
 Versi **0.9.0-beta.2** mencakup inventaris per unit, peminjaman/pengembalian,
 kelengkapan serah terima, peminjaman kelompok, kerusakan/penanganan, referensi
@@ -29,9 +30,12 @@ Paket rilis tidak membawa `.env`, database operasional, foto barang, atau sesi.
 Admin pertama dibuat menggunakan nama dan kata sandi pilihan pengguna.
 Kategori/lokasi awal dapat disesuaikan di menu Data Referensi.
 
-Windows desktop beta ditujukan untuk **satu komputer** (127.0.0.1). Untuk
-petugas menggunakan HP/tablet atau beberapa komputer, pasang edisi web di server
-HTTPS. Kamera browser memerlukan secure context dan dukungan perangkat.
+Pindai.in dapat diakses melalui komputer, HP, dan tablet yang terhubung ke server
+aplikasi. Installer Windows secara bawaan menjalankan server lokal di
+`127.0.0.1`. Akses dari perangkat lain memerlukan penyesuaian konfigurasi jaringan
+dan HTTPS, atau tunnel HTTPS seperti ngrok. Pengaturan jaringan/tunnel belum
+disediakan dalam wizard installer beta ini. Kamera pemindai QR memerlukan HTTPS
+dan izin kamera dari browser.
 
 ## Mengembangkan aplikasi
 

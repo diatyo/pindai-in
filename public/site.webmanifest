@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Pindai.in",
   "short_name": "Pindai.in",
-  "description": "SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE",
+  "description": "Sistem informasi peminjaman dan monitoring inventaris barang berbasis web dengan identifikasi QR Code",
   "lang": "id",
   "start_url": "./",
   "scope": "./",

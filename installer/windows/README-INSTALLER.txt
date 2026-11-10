@@ -1,5 +1,5 @@
 PINDAI.IN - WINDOWS DESKTOP (BETA)
-SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE
+Sistem informasi peminjaman dan monitoring inventaris barang berbasis web dengan identifikasi QR Code
 
 1. Jalankan PindaiIn-Setup-...-win64.exe di Windows 10/11 64-bit.
 2. Jika dibutuhkan, izinkan pemasangan Visual C++ Runtime resmi Microsoft.
@@ -32,9 +32,11 @@ Uninstall mempertahankan folder data. Jangan hapus folder ini bila masih dipakai
 Service berjalan sebagai LocalService dengan hak terbatas, bukan LocalSystem.
 
 LINGKUP BETA
-Edisi ini untuk satu komputer Windows, diakses melalui browser komputer itu
-sendiri (127.0.0.1). Database dan web server hanya mendengarkan loopback.
-Untuk banyak petugas/HP dalam jaringan, gunakan edisi web di server HTTPS.
+Aplikasi dapat digunakan melalui komputer, HP, dan tablet yang terhubung ke
+server. Installer bawaan memakai 127.0.0.1. Akses perangkat lain melalui LAN
+atau tunnel HTTPS seperti ngrok memerlukan penyesuaian konfigurasi server,
+alamat aplikasi, dan validasi host. Wizard beta belum mengatur jaringan/tunnel.
+Kamera pemindai QR membutuhkan HTTPS dan izin browser pada perangkat pengguna.
 Installer belum ditandatangani sertifikat penerbit. Windows SmartScreen dapat
 meminta pemeriksaan tambahan; cocokkan SHA256SUMS.txt dari rilis yang sama.
 Beta ini belum diuji di seluruh variasi komputer Windows/antivirus.

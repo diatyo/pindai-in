@@ -1,6 +1,6 @@
 # Windows desktop beta
 
-Pindai.in — **SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE**.
+Pindai.in — **Sistem informasi peminjaman dan monitoring inventaris barang berbasis web dengan identifikasi QR Code**.
 
 Unduh installer `.exe` dan `SHA256SUMS.txt` dari GitHub Releases. Repository
 publik menyediakan source ZIP di rilis yang sama dengan installer.
@@ -9,9 +9,19 @@ Windows 10/11 x64 dan izin administrator Windows diperlukan. Instal, lalu buka p
 pertama menanyakan nama sekolah serta admin dan kata sandi pilihan sendiri.
 Tidak ada akun bawaan atau data operasional sekolah pengembang dalam installer.
 
-Edisi ini untuk akses lokal satu komputer melalui browser. Server memakai
-127.0.0.1; akses kamera webcam di localhost mengikuti dukungan browser. Untuk
-HP/tablet atau beberapa komputer, pasang source di server HTTPS terpisah.
+Pindai.in mendukung akses melalui komputer, HP, dan tablet pada server yang sama.
+Konfigurasi bawaan installer memakai `127.0.0.1`, sehingga akses langsung dari
+perangkat lain belum aktif. Akses melalui LAN/HTTPS atau tunnel HTTPS seperti
+ngrok memerlukan penyesuaian alamat aplikasi, bind server, dan validasi host.
+Pengaturan jaringan/tunnel belum tersedia dalam wizard beta ini. File `.env`
+desktop dihasilkan launcher, sehingga mengeditnya langsung bukan konfigurasi
+jaringan yang persisten.
+
+Tunnel meneruskan koneksi HTTPS ke server lokal; alamat aplikasi dan penanganan
+host tetap harus sesuai agar tautan, login, dan pemindai bekerja dari HP.
+Kamera browser memerlukan secure context serta izin pengguna.
+Lihat [dokumentasi ngrok](https://ngrok.com/docs/gateway/endpoints/http) dan
+[ketentuan kamera browser](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia).
 
 Data bersama di komputer berada di `%PROGRAMDATA%\PindaiIn\data`, program di
 `%PROGRAMFILES%\PindaiIn`. Laragon dan database hosting tetap terpisah.

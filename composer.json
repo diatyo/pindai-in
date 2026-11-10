@@ -1,6 +1,6 @@
 {
     "name": "codeigniter4/appstarter",
-    "description": "SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE",
+    "description": "Sistem informasi peminjaman dan monitoring inventaris barang berbasis web dengan identifikasi QR Code",
     "license": "MIT",
     "type": "project",
     "homepage": "https://codeigniter.com",

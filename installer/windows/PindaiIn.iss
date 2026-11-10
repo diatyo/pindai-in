@@ -7,7 +7,7 @@
 [Setup]
 AppId={{1B5FCE1A-5C5A-4974-8E85-302FB9A02A36}
 AppName=Pindai.in
-AppComments=SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE
+AppComments=Sistem informasi peminjaman dan monitoring inventaris barang berbasis web dengan identifikasi QR Code
 AppVersion={#AppVersion}
 AppPublisher=Dimas Adi Prasetyo
 AppPublisherURL=https://github.com/diatyo/pindai-in
