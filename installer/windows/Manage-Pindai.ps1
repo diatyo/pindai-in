@@ -159,6 +159,13 @@ function Stop-Web {
     $script:state.web_pid = 0
 }
 function Client-Args { return ('--defaults-extra-file="' + (Join-Path $configDir 'mysql-client.ini') + '"') }
+function Owned-MySqlProcesses {
+    $exe=Join-Path $mysqlBin 'mysqld.exe'
+    $marker=Join-Path $configDir 'my.ini'
+    return Get-CimInstance Win32_Process -Filter "Name='mysqld.exe'" | Where-Object {
+        $_.ExecutablePath -and [string]::Equals($_.ExecutablePath,$exe,[StringComparison]::OrdinalIgnoreCase) -and $_.CommandLine -and $_.CommandLine.Contains($marker)
+    }
+}
 function Database-Ready {
     try {
         $actual = (Run-Tool (Join-Path $mysqlBin 'mysql.exe') ((Client-Args) + ' --batch --raw --skip-column-names -e "SELECT @@datadir"')).Trim()
@@ -195,8 +202,17 @@ try {
     $clientConfig = Join-Path $configDir 'mysql-client.ini'
     if ($Action -eq 'Stop') {
         Stop-Web
-        if ($script:state.mysql_pid -and (Owned-Process $script:state.mysql_pid (Join-Path $mysqlBin 'mysqld.exe') $myConfig)) {
+        $owned=@(Owned-MySqlProcesses)
+        if ($owned.Count -gt 0) {
+            $handles=@($owned | ForEach-Object { try { [Diagnostics.Process]::GetProcessById($_.ProcessId) } catch {} })
             [void](Run-Tool (Join-Path $mysqlBin 'mysqladmin.exe') ((Client-Args) + ' shutdown'))
+            # Windows MySQL has a supervisor and a worker. Wait for both, so an
+            # immediate update/restart cannot race the old InnoDB file handles.
+            foreach($handle in $handles) {
+                try { if(-not $handle.WaitForExit(30000)) { throw 'MySQL belum selesai berhenti. Tunggu lalu ulangi.' } }
+                finally { $handle.Dispose() }
+            }
+            if(@(Owned-MySqlProcesses).Count -gt 0) { throw 'Proses MySQL lama masih berjalan. Pembaruan dihentikan.' }
         }
         $script:state.mysql_pid=0; Save-State
         if (-not $Headless) { Add-Type -AssemblyName System.Windows.Forms; [void][Windows.Forms.MessageBox]::Show('Server Pindai.in sudah dihentikan. Data tetap tersimpan.','Pindai.in') }
@@ -240,7 +256,11 @@ connect-timeout=2
         }
         [void](Run-Tool (Join-Path $mysqlBin 'mysqld.exe') ('--defaults-file="' + $myConfig + '" --initialize-insecure'))
     }
-    if (-not (Owned-Process $script:state.mysql_pid (Join-Path $mysqlBin 'mysqld.exe') $myConfig)) {
+    $existing=@(Owned-MySqlProcesses)
+    if($existing.Count -gt 0) {
+        $script:state.mysql_pid=$existing[0].ProcessId
+        Save-State
+    } else {
         $arguments = '--defaults-file="' + $myConfig + '"'
         if (-not $script:state.initialized) {
             $init = Join-Path $configDir 'mysql-initialize.sql'
