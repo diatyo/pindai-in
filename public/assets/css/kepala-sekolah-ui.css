@@ -1,0 +1,99 @@
+/* Kepala Sekolah: monitor/read-only surface sharing the product shell. */
+.principal-app .principal-header-tools{display:flex;align-items:center;gap:12px}.principal-app .period-control{display:grid;gap:3px;min-width:150px;font-size:11px;font-weight:700;color:#564a40}.principal-app .period-control .control{min-width:150px;height:42px;padding-block:8px}
+.principal-app .desktop-page-heading{display:grid;gap:2px}
+.principal-app .chart-grid>.card{border-radius:16px}.principal-app .chart{height:190px}.principal-app .bar{background:linear-gradient(180deg,var(--gold-2),var(--gold));border-radius:7px 7px 3px 3px}.principal-app .donut{position:relative;background:conic-gradient(var(--gold) 0 var(--available-end,0%),var(--sage) var(--available-end,0%) var(--borrowed-end,0%),var(--brown) var(--borrowed-end,0%) 100%);filter:saturate(.9)}.principal-app .donut.is-empty{background:var(--cream-2)}.principal-app .donut:after{content:'';position:absolute;inset:31px;width:auto;height:auto;background:var(--paper)}.principal-app .donut>span{position:relative;z-index:1;display:grid;text-align:center}.principal-app .donut>span b{font:800 24px Nunito}.principal-app .donut>span small{font-size:12px;color:var(--muted)}
+.principal-app .page-title>.badge{display:none}
+@media(max-width:1023px){
+  .principal-app .desktop-shell{display:block;min-height:0}.principal-app .sidebar,.principal-app .desktop-top{display:none!important}.principal-app .desktop-main{width:100%!important;margin:0!important}
+  .principal-app .summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.principal-app .summary .card{min-height:120px;padding:16px;margin:0}
+  .principal-app .summary .card>b{font-size:28px}.principal-app .chart-grid{grid-template-columns:1fr;gap:12px}.principal-app .chart-grid>.card{min-height:0}.principal-app .chart{height:180px}
+  .principal-app .top{align-items:flex-start}.principal-app .top>.principal-header-tools{flex-direction:column;align-items:flex-end;gap:5px}.principal-app .top .period-control{min-width:118px}.principal-app .top .period-control .control{width:118px;min-width:118px;height:40px;padding:7px 28px 7px 10px;font-size:13px}.principal-app .top .principal-header-tools>.badge{display:inline-flex}
+  .principal-app #dashboard .page-title{display:grid;grid-template-columns:1fr}.principal-app #dashboard .page-title>div{min-width:0}
+  .principal-app #items>.page>.card:first-of-type{display:none}
+  .principal-app .table-card{background:transparent;border:0;box-shadow:none;overflow:visible}
+  .principal-app .table-wrap{display:none}
+  .principal-app .toolbar{display:grid;gap:10px;padding:12px;background:var(--paper);border:1px solid var(--surface-border);border-radius:16px;margin-bottom:12px}
+  .principal-app .toolbar .search{width:100%}.principal-app .tabs{display:flex;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.principal-app .tabs::-webkit-scrollbar{display:none}.principal-app .tab{flex:0 0 auto;min-height:44px}
+
+  .principal-app #activity>.page>.card,.principal-app #loans>.page>.card,.principal-app #damages>.page>.card{padding:15px}.principal-app .grid2{display:grid;grid-template-columns:1fr;gap:10px}.principal-app .field{margin-bottom:0}.principal-app .row{display:grid;grid-template-columns:1fr 1fr}
+  .principal-app .page-title>.btn{min-height:44px}.principal-app .sheet-box{border-radius:24px 24px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom))}.principal-app .sheet-menu{grid-template-columns:1fr 1fr}.principal-app .sheet-menu .btn{min-height:54px}
+}
+@media(max-width:599px){.principal-app .page-title{display:grid;grid-template-columns:1fr}.principal-app .page-title>.btn{justify-self:start}.principal-app #dashboard .chart-grid{display:grid}.principal-app #dashboard .chart-grid>.card:first-child{display:none}.principal-app #dashboard>.page>.summary:nth-of-type(2){grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:600px) and (max-width:1023px){.principal-app .chart-grid{grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr)}.principal-app .grid2{grid-template-columns:1fr 1fr}}
+/* Laporan & riwayat: header tabel selaras dengan Pengurus Barang */
+.principal-app .report-table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.principal-app .report-table-toolbar>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.principal-app .report-table-toolbar>div>b{font:800 15px Nunito}
+.principal-app .report-table-toolbar .btn{min-height:42px;white-space:nowrap}
+@media(max-width:1023px){
+  .principal-app .report-table-toolbar{align-items:flex-end}
+.principal-app .table-card:has(.mobile-list) .report-table-toolbar{padding-inline:0;border-bottom:0}
+}
+/* Filter Laporan Peminjaman: 5 kolom agar sejajar, tidak berdesakan */
+.principal-app #loans .own-activity-filter-grid{grid-template-columns:1fr}
+.principal-app #loans .date-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.principal-app #loans .date-pair .control{min-width:0;padding-inline:10px}
+@media(min-width:700px) and (max-width:1023px){
+  .principal-app #loans .own-activity-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:end}
+  .principal-app #loans .own-activity-filter-actions{grid-column:1/-1;justify-content:flex-end}
+}
+@media(min-width:1024px){
+.principal-app #loans .own-activity-filter-grid{grid-template-columns:minmax(210px,1fr) minmax(140px,.62fr) minmax(120px,.52fr) minmax(200px,1.3fr) auto;align-items:end}
+.principal-app #loans .own-activity-filter-actions{justify-content:flex-end}
+}
+/* Ringkasan peminjaman: strip ramping seperti Laporan Operasional */
+.principal-app #loans .report-summary-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:6px 0}
+.principal-app #loans .report-summary-item{display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0;min-height:52px;padding:6px 18px;margin:0}
+.principal-app #loans .report-summary-item b{font:800 24px Nunito;line-height:1;color:var(--brown-2);display:block}
+.principal-app #loans .report-summary-item:nth-child(even){border-left:1px solid var(--line)}
+.principal-app #loans .report-summary-item:nth-child(n+3){border-top:1px solid var(--line)}
+@media(min-width:700px){
+  .principal-app #loans .report-summary-strip{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .principal-app #loans .report-summary-item:nth-child(n+3){border-top:0}
+.principal-app #loans .report-summary-item+.report-summary-item{border-left:1px solid var(--line)}
+}
+.principal-app .mobile-record-foot-end{justify-content:flex-end}
+.principal-app .principal-menu-sheet{max-width:430px;padding:16px 18px calc(18px + env(safe-area-inset-bottom))}
+.principal-app .principal-menu-sheet .section-head{margin:0 0 14px}
+.principal-app .principal-menu-sheet .section-head h2{font-size:18px}
+.principal-app .principal-menu-sheet .section-head .round{width:36px;height:36px;box-shadow:none;font-size:22px;line-height:1}
+.principal-app .principal-sheet-menu{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.principal-app .principal-sheet-menu .sheet-item{justify-content:flex-start;min-height:50px;padding:11px 13px;background:var(--paper)}
+.principal-app .principal-sheet-logout{grid-column:1/-1;justify-content:center!important}
+.principal-app .principal-sheet-note{margin:12px 2px 0;font-size:12px;line-height:1.4;text-align:center}
+/* Grafik tren 7 hari: ringkas, terbaca, dan tetap informatif saat nilai nol */
+.principal-app #dashboard .chart-grid{align-items:stretch}
+.principal-app .weekly-chart-card{padding-bottom:16px}
+.principal-app .status-chart-card{height:auto}
+.principal-app .status-chart-card .donut{width:124px;height:124px;margin:8px auto 10px}
+.principal-app .status-chart-card .donut:after{inset:23px}
+.principal-app .status-chart-card .kv{padding:7px 0;font-size:13px}
+.principal-app .weekly-chart-layout{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px}
+.principal-app .weekly-chart-axis{display:grid;grid-template-rows:22px 140px auto;padding:12px 0 2px;color:var(--muted);font-size:9px;text-align:right}
+.principal-app .weekly-chart-axis>div{display:flex;flex-direction:column;justify-content:space-between;line-height:1}
+.principal-app .weekly-chart{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));align-items:stretch;height:auto;gap:10px;padding:12px 8px 2px}
+.principal-app .weekly-bar-item{display:grid;grid-template-rows:22px 140px auto;min-width:0;text-align:center}
+.principal-app .weekly-bar-value{font:700 12px Nunito;color:var(--brown-2)}
+.principal-app .weekly-bar-track{display:flex;align-items:flex-end;justify-content:center;min-width:0;border-bottom:1px solid rgba(72,54,36,.2);background:repeating-linear-gradient(to top,transparent 0,transparent 34px,rgba(72,54,36,.07) 35px)}
+.principal-app .weekly-bar-track .bar{flex:0 0 auto;width:min(30px,62%);min-height:0;background:var(--gold)}
+.principal-app .weekly-bar-item.is-today .bar{background:var(--brown)}
+.principal-app .weekly-bar-item.is-today small b{display:inline-block;padding:2px 6px;border-radius:7px;background:var(--gold-soft);color:var(--brown-2)}
+.principal-app .weekly-bar-item.is-zero .weekly-bar-track:after{content:'';width:6px;height:6px;margin-bottom:-3px;border-radius:50%;background:var(--line)}
+.principal-app .weekly-bar-item small{display:grid;gap:1px;padding-top:7px;color:var(--muted);font-size:10px;line-height:1.2}
+.principal-app .weekly-bar-item small b{color:var(--brown-2);font-size:11px}
+@media(min-width:600px){
+  .principal-app #dashboard .weekly-chart-card,.principal-app #dashboard .status-chart-card{height:312px}
+}
+@media(max-width:599px){
+  .principal-app #dashboard .chart-grid>.card:first-child{display:block}
+  .principal-app .weekly-chart-card{padding:14px 14px 13px}
+  .principal-app .weekly-chart-card .section-head{gap:8px}
+  .principal-app .weekly-chart-card .section-head h2{font-size:16px}
+  .principal-app .weekly-chart-layout{grid-template-columns:20px minmax(0,1fr);gap:6px}
+  .principal-app .weekly-chart-axis{grid-template-rows:20px 96px auto}
+  .principal-app .weekly-chart{gap:5px;padding-inline:0}
+  .principal-app .weekly-bar-item{grid-template-rows:20px 96px auto}
+  .principal-app .weekly-bar-track{background:repeating-linear-gradient(to top,transparent 0,transparent 23px,rgba(72,54,36,.07) 24px)}
+  .principal-app .weekly-bar-track .bar{width:min(22px,68%)}
+  .principal-app .weekly-bar-item small span{display:none}
+}

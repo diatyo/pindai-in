@@ -1,0 +1,97 @@
+/* Portal Peminjam (baca saja) - variasi dari principal-app */
+.borrower-app .role-status-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.borrower-app .page-title>.badge{display:inline-flex}
+.borrower-app .table-card:has(.mobile-list) .table-wrap{display:none}
+.borrower-app .mobile-record-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.borrower-app .timeline .event small{display:block;color:var(--muted);font-size:12px}
+.borrower-app .borrower-item-photo-wrap{overflow:hidden;border:1px solid var(--surface-border);border-radius:18px;background:var(--paper);box-shadow:var(--shadow-sm)}
+.borrower-app .borrower-item-photo{position:relative;display:block;width:100%;height:260px;padding:0;overflow:hidden;border:0;background:var(--cream-2);color:#fff;cursor:zoom-in;text-align:left}
+.borrower-app .borrower-item-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.borrower-app .borrower-item-photo span{position:absolute;right:12px;bottom:12px;left:12px;display:grid;gap:2px;padding:10px 12px;border-radius:12px;background:rgba(43,36,29,.84)}
+.borrower-app .borrower-item-photo small{color:#eee4da}
+.borrower-app .borrower-item-photo.is-empty{display:grid;place-items:center;color:var(--muted);cursor:default;text-align:center}
+.borrower-app .borrower-item-photo.is-empty span{position:static;background:transparent}
+.borrower-app .borrower-item-photo:focus-visible{outline:3px solid rgba(201,154,66,.65);outline-offset:-4px}
+@media(min-width:1024px){
+  .borrower-app .desktop-shell{display:flex;min-height:100dvh}
+  .borrower-app .sidebar,.borrower-app .desktop-top{display:flex!important}
+  .borrower-app .table-card:has(.mobile-list) .table-wrap{display:block}
+  .borrower-app .mobile-list{display:none}
+  /* Daftar dasbor dipakai di semua ukuran layar dan tidak memiliki tabel pengganti. */
+  .borrower-app .borrower-dashboard-list{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+  .borrower-app .borrower-dashboard-list .mobile-record{min-width:0;padding:16px 18px;background:var(--paper);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow-sm)}
+  .borrower-app .borrower-dashboard-list .mobile-record-head{display:flex;align-items:center;gap:10px}
+  .borrower-app .borrower-dashboard-list h3{margin:0;font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+  .borrower-app .borrower-dashboard-list .badge{flex-shrink:0}
+  .borrower-app .borrower-dashboard-list .mobile-record-foot{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .borrower-app .role-status-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:599px){
+  .borrower-app .role-status-strip{grid-template-columns:1fr}
+}
+
+/* Portal peminjam: mobile ringkas, mudah dipindai, dan konsisten dengan empat menu utama. */
+@media(max-width:1023px){
+  .borrower-app{--mobile-gutter:16px}
+  .borrower-app .top{min-height:68px;padding:12px var(--mobile-gutter) 10px;align-items:center;background:rgba(255,250,242,.86);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+  .borrower-app .top .avatar{width:38px;height:38px;border-radius:12px;font-size:12px}
+  .borrower-app .top .profile{gap:9px;min-width:0}
+  .borrower-app .top .profile>div:last-child{min-width:0}
+  .borrower-app .top .profile b{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+  .borrower-app .top .profile small{font-size:10px}
+  .borrower-app .top>.badge{flex:0 0 auto;padding:5px 9px;font-size:10px}
+  .borrower-app .page{padding:14px var(--mobile-gutter) calc(102px + env(safe-area-inset-bottom))!important}
+  .borrower-app .responsive-page-title{margin:2px 0 14px;align-items:flex-start}
+  .borrower-app .responsive-page-title h1{font-size:22px;line-height:1.2}
+  .borrower-app .responsive-page-title .muted{display:block;margin-top:3px;font-size:13px;line-height:1.4}
+  .borrower-app .role-status-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:0 0 17px}
+  .borrower-app .mobile-status-item{min-height:86px;padding:11px 5px 9px;border-radius:14px;background:var(--paper)}
+  .borrower-app .mobile-status-item:before{height:3px}
+  .borrower-app .mobile-status-item>span:first-child{width:25px;height:25px;margin:0 auto 2px;border-radius:8px}
+  .borrower-app .mobile-status-item b{font:800 21px/1 Nunito}
+  .borrower-app .mobile-status-item small{font-size:11px;line-height:1.18;color:#51453b}
+  .borrower-app .section-head{margin:17px 0 9px}
+  .borrower-app .section-head h2{font-size:17px}
+  .borrower-app .section-head .link{font-size:12px}
+  .borrower-app .mobile-list{gap:9px;padding-bottom:5px}
+  .borrower-app .mobile-record{padding:13px;border-radius:15px}
+  .borrower-app .mobile-record-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px}
+  .borrower-app .mobile-record-head h3{margin:0;font-size:14px;line-height:1.3}
+  .borrower-app .mobile-record-head .badge{white-space:nowrap}
+  .borrower-app .mobile-record-foot{margin-top:9px;padding-top:8px;gap:10px}
+  .borrower-app .mobile-record-foot small{font-size:11px;line-height:1.35}
+  .borrower-app .mobile-record-foot .link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:6px 2px;font-size:12px;white-space:nowrap}
+  .borrower-app .borrower-timeline{margin:0;padding:5px 14px 5px 23px;border-radius:15px}
+  .borrower-app .borrower-timeline .event{padding:11px 0}
+  .borrower-app .borrower-timeline .event:not(:last-child){border-bottom:1px solid var(--line)}
+  .borrower-app .borrower-timeline .event:before{left:-19px;top:17px}
+  .borrower-app .borrower-timeline .event b{display:block;font-size:13px;line-height:1.35}
+  .borrower-app .borrower-timeline .event small{margin-top:3px;font-size:11px}
+  .borrower-app .borrower-loans-card{margin-top:0}
+  .borrower-app .borrower-search-toolbar{padding:0;margin-bottom:11px}
+  .borrower-app .borrower-search-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;width:100%}
+  .borrower-app .borrower-search-form .control{min-width:0}
+  .borrower-app .borrower-search-form .btn{min-width:72px;padding-inline:14px}
+  .borrower-app .mobile-record-details{margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
+  .borrower-app .mobile-record-details summary{font-size:12px;font-weight:700;color:var(--amber)}
+  .borrower-app .mobile-record-details p{margin-top:8px!important}
+  .borrower-app .borrower-detail-card{margin-top:0;padding:15px;border-radius:17px}
+  .borrower-app .borrower-item-photo{height:210px}
+  .borrower-app .borrower-detail-card .kv{padding:10px 0;gap:14px}
+  .borrower-app .borrower-detail-card .kv span{font-size:12px}
+  .borrower-app .borrower-detail-card .kv b{font-size:13px;text-align:right;overflow-wrap:anywhere}
+  .borrower-app .borrower-profile-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .borrower-app .borrower-profile-actions .btn{width:100%;margin:0}
+  .borrower-app .bottom{grid-template-columns:repeat(4,minmax(0,1fr));height:calc(72px + env(safe-area-inset-bottom));max-width:none;padding-bottom:env(safe-area-inset-bottom);border-radius:20px 20px 0 0}
+  .borrower-app .bottom a{min-width:0;min-height:58px;margin:5px 3px 7px;font-size:11px;font-weight:650;color:#51453b;position:relative}
+  .borrower-app .bottom a.active{min-height:58px;margin:5px 3px 7px;border-radius:14px;background:var(--gold-soft);color:var(--brown-2);font-weight:800}
+  .borrower-app .bottom a.active:before{content:'';position:absolute;top:3px;left:50%;width:22px;height:3px;border-radius:999px;background:var(--brown);transform:translateX(-50%)}
+  .borrower-app .bottom-icon{display:grid;place-items:center;width:21px;height:21px;margin:0 auto}
+  .borrower-app .bottom-icon svg{width:19px;height:19px}
+}
+
+@media(max-width:359px){
+  .borrower-app{--mobile-gutter:12px}
+  .borrower-app .mobile-status-item small{font-size:10px}
+  .borrower-app .borrower-profile-actions{grid-template-columns:1fr}
+}

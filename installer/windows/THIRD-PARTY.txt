@@ -1,0 +1,35 @@
+Pindai.in Windows - third-party components
+
+The Pindai.in application source is supplied as PindaiIn-source-*.zip in the
+same GitHub Release. Existing project LICENSE applies to application source.
+This installer aggregates independent PHP and MySQL programs. Their licenses
+remain separate. No claim of affiliation with their authors is made.
+
+PHP 8.4.25 (unmodified Windows x64 thread-safe runtime)
+https://www.php.net/
+PHP License 3.01 and bundled component notices: licenses/php/ and runtime/php/.
+Corresponding upstream source: php-8.4.25-source.tar.gz in the same Release.
+Original source: https://www.php.net/distributions/php-8.4.25.tar.gz
+
+MySQL Community Server 8.4.3 (unmodified Windows x64 runtime)
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+GPL version 2 with exceptions and bundled component licenses; full license:
+licenses/mysql/LICENSE, runtime/mysql/LICENSE, and runtime/mysql/docs/.
+Corresponding upstream source: mysql-8.4.3-source.tar.gz in the same Release.
+Original source: https://github.com/mysql/mysql-server/tree/mysql-8.4.3
+Build configuration supplied by upstream: runtime/mysql/docs/INFO_BIN.
+MySQL source is supplied for equivalent access alongside the installer.
+
+Microsoft Visual C++ Redistributable 2015-2022 x64
+Unmodified digitally signed Microsoft redistributable. Copyright Microsoft.
+Microsoft's terms apply. Download: https://aka.ms/vs/17/release/vc_redist.x64.exe
+
+Composer dependencies (CodeIgniter, Dompdf, Endroid QR Code, PhpSpreadsheet,
+and transitive libraries) are distributed with their LICENSE/NOTICE files
+under app/vendor. Exact versions are recorded in app/composer.lock.
+Frontend dependencies retain their copyright/license notices under app/public/assets.
+
+Installer compiler: Inno Setup 7.1.1 (not part of installed runtime),
+https://jrsoftware.org/ and https://github.com/jrsoftware/issrc
+
+GitHub Release: https://github.com/diatyo/pindai-in/releases

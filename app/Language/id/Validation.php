@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'noRuleSets' => 'Aturan validasi belum ditentukan.',
+    'ruleNotFound' => 'Aturan validasi "{0}" tidak tersedia.',
+    'groupNotFound' => 'Grup aturan validasi "{0}" tidak tersedia.',
+    'groupNotArray' => 'Grup aturan validasi "{0}" harus berupa larik.',
+    'invalidTemplate' => 'Templat validasi "{0}" tidak valid.',
+    'in_list' => '{field} harus berisi salah satu pilihan yang tersedia.',
+    'is_natural' => '{field} hanya boleh berisi angka.',
+    'is_natural_no_zero' => '{field} harus berupa angka lebih dari nol.',
+    'is_unique' => '{field} sudah digunakan.',
+    'matches' => '{field} tidak sama dengan {param}.',
+    'max_length' => '{field} tidak boleh lebih dari {param} karakter.',
+    'min_length' => '{field} minimal {param} karakter.',
+    'regex_match' => 'Format {field} tidak sesuai.',
+    'required' => '{field} wajib diisi.',
+    'valid_date' => '{field} harus berupa tanggal yang valid.',
+    'uploaded' => '{field} belum diunggah dengan benar.',
+    'max_size' => 'Ukuran berkas {field} terlalu besar.',
+    'is_image' => '{field} harus berupa gambar yang valid.',
+    'mime_in' => 'Jenis berkas {field} tidak didukung.',
+    'ext_in' => 'Ekstensi berkas {field} tidak didukung.',
+    'max_dims' => 'Dimensi gambar {field} terlalu besar.',
+    'min_dims' => 'Dimensi gambar {field} terlalu kecil.',
+];

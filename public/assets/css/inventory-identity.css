@@ -1,0 +1,158 @@
+.item-name-cell{min-width:180px;max-width:360px}
+.item-name-link{display:block;color:inherit;font-size:15px;font-weight:700;line-height:1.5;text-decoration:none;overflow-wrap:anywhere;white-space:normal}
+.item-name-link:hover{text-decoration:underline;text-underline-offset:3px}
+.item-name-link:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+/* Fit the desktop inventory table on common laptop screens at 100% zoom. */
+@media screen and (min-width:1200px) and (max-width:1799px){
+  .petugas-app:has(#items) .sidebar{width:240px;padding-inline:14px}
+  .petugas-app:has(#items) .side-profile :is(.account-btn,.logout-btn){padding-inline:8px;gap:5px;white-space:nowrap}
+  .petugas-app:has(#items) .desktop-main{margin-left:240px;width:calc(100% - 240px)}
+  .petugas-app #items.page{padding-inline:24px}
+  #items .bulk-qr-form .table{table-layout:fixed;min-width:0;width:100%}
+  #items .bulk-qr-form .table :is(th,td){padding:12px 10px;white-space:normal;overflow-wrap:anywhere}
+  #items .bulk-qr-form .table th:nth-child(1){width:40px}
+  #items .bulk-qr-form .table th:nth-child(2){width:110px}
+  #items .bulk-qr-form .table th:nth-child(4){width:148px}
+  #items .bulk-qr-form .table th:nth-child(5){width:102px}
+  #items .bulk-qr-form .table th:nth-child(6){width:80px}
+  #items .bulk-qr-form .table th:nth-child(7){width:100px}
+  #items .bulk-qr-form .table th:nth-child(8){width:244px}
+  #items .bulk-qr-form .item-name-cell{min-width:0;max-width:none}
+  #items .bulk-qr-form .item-name-link{font-size:14px}
+  #items .bulk-qr-form .badge{font-size:11px;white-space:normal;text-align:center;max-width:100%}
+  #items .row-actions{flex-wrap:nowrap;gap:6px}
+  #items .row-btn{min-height:38px;padding:8px;gap:5px;font-size:12px}
+  #items .toolbar{padding:12px;gap:10px}
+  #items .toolbar>.tabs{gap:2px;max-width:100%}
+  #items .toolbar .tab{padding:7px 8px;font-size:12px}
+  #items .toolbar .tab-count{margin-left:4px;min-width:18px;padding-inline:4px;font-size:11px}
+  #items .toolbar-actions{padding-left:8px;gap:6px}
+  #items .toolbar-actions .btn{padding-inline:10px;font-size:12px}
+}
+.item-unit-code{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+/* Full-width identity on the detail-to-return path for portrait tablets. */
+#loanSuccess{text-align:center}
+#loanSuccess .transaction-success-mark{display:grid;place-items:center;width:56px;height:56px;margin:20px auto 14px;border-radius:50%;background:#d5eadb;color:#173f27;font-size:30px}
+#loanSuccess h1{font:800 28px/1.25 Nunito,sans-serif;margin:0 0 8px}
+#loanSuccess .transaction-success-note{margin:0 0 24px}
+#loanSuccess .transaction-success-summary{text-align:left;margin:0}
+#loanSuccess .transaction-item-name{display:block;width:100%;margin:8px 0 0;font:800 24px/1.35 Nunito,sans-serif;word-break:normal;overflow-wrap:break-word;text-wrap:pretty}
+#loanSuccess .kv{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px}
+#loanSuccess .kv b{min-width:0;overflow-wrap:break-word}
+#loanSuccess .transaction-success-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
+#loanSuccess .transaction-success-actions .btn{display:flex;align-items:center;justify-content:center;min-height:48px;white-space:normal;text-align:center}
+@media(max-width:599px){
+  #loanSuccess .transaction-item-name{font-size:21px}
+  #loanSuccess .transaction-success-actions{grid-template-columns:minmax(0,1fr)}
+  #loanSuccess .kv{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+@media screen and (min-width:600px) and (max-width:1023px) and (orientation:portrait){
+  .petugas-app #loanDetail>.card>.kv:first-child{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+  .petugas-app #loanDetail>.card>.kv:first-child>b{min-width:0;width:100%;text-align:left}
+  .petugas-app #loanDetail>.card>.kv:first-child .link{display:block;min-height:0;padding:0;font:800 20px/1.4 Nunito,sans-serif;word-break:normal;overflow-wrap:break-word}
+  .petugas-app #loanDetail>.card>.kv:first-child br{display:none}
+  .petugas-app #loanDetail>.card>.kv:first-child small{display:block;margin-top:6px;font-size:13px}
+  .petugas-app .page:has(>#loanReturnForm)>article.card>h3{display:block;width:100%;min-width:0;margin:0 0 8px;font:800 20px/1.4 Nunito,sans-serif;word-break:normal;overflow-wrap:break-word;text-wrap:pretty}
+  .petugas-app .page:has(>#loanReturnForm)>article.card>.kv{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px}
+  .petugas-app .page:has(>#loanReturnForm)>article.card>.kv>b{min-width:0;overflow-wrap:break-word}
+}
+#detail .page-title{align-items:flex-start;gap:16px}
+#detail .page-title>div:first-child{min-width:0;flex:1}
+#detail .item-name-primary{font-size:28px;line-height:1.25;overflow-wrap:anywhere;margin:4px 0 0}
+#detail .item-unit-code{font-size:14px}
+.mobile-record-head .item-name-primary{font-size:17px;line-height:1.4;overflow-wrap:anywhere}
+@media(max-width:600px){#detail .page-title{flex-wrap:wrap}#detail .page-title>div:first-child{flex-basis:100%}#detail .item-name-primary{font-size:24px}#detail .detail-header-actions{justify-content:flex-start!important}}
+
+:is(#items,#loans) .inventory-mobile,:is(#detail,#loanDetail) .inventory-mobile{display:none}
+.inventory-filter-sheet{
+  position:fixed;inset:auto 0 0;margin:0 auto;width:min(100%,480px);max-width:none;
+  max-height:calc(100dvh - 16px);overflow:auto;overscroll-behavior:contain;
+  padding:16px 18px calc(18px + env(safe-area-inset-bottom));border:1px solid var(--line);
+  border-radius:22px 22px 0 0;background:var(--paper);color:var(--ink);box-shadow:var(--shadow)
+}
+.inventory-filter-sheet::backdrop{background:rgba(43,36,29,.56)}
+.inventory-sheet-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.inventory-sheet-heading h2{margin:0;font:800 21px/1.3 Nunito,sans-serif}
+.inventory-sheet-actions{display:flex;flex-wrap:wrap;gap:8px}
+.inventory-sheet-actions .btn{flex:1;min-width:max-content;text-align:center}
+.inventory-filter-sheet select{min-height:48px;font-size:16px}
+
+@media(max-width:1023px){
+  .petugas-app :is(#items,#loans) .inventory-desktop{display:none}
+  .petugas-app :is(#items,#loans) .inventory-mobile{display:block}
+  .petugas-app :is(#items,#loans) .page-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .petugas-app :is(#items,#loans) .page-title h1{margin:0}
+  .petugas-app #items .inventory-add{display:inline-flex;min-height:44px;padding:8px 11px}
+  :is(#items,#loans) .inventory-controls{margin-bottom:12px}
+  :is(#items,#loans) .inventory-search-tools{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+  :is(#items,#loans) .inventory-search{
+    display:flex;min-width:0;min-height:48px;align-items:center;border:1px solid var(--line);
+    border-radius:13px;background:var(--paper)
+  }
+  :is(#items,#loans) .inventory-search:focus-within{border-color:var(--gold);outline:2px solid var(--gold);outline-offset:1px}
+  :is(#items,#loans) .inventory-search :is(button,a){
+    display:grid;flex:0 0 44px;min-height:44px;place-items:center;padding:0;
+    border:0;border-radius:12px;background:transparent;color:var(--brown);text-decoration:none
+  }
+  :is(#items,#loans) .inventory-search a{font-size:21px}
+  :is(#items,#loans) .inventory-search input{width:100%;min-width:0;height:46px;padding:0 4px 0 0;border:0;background:transparent;color:var(--ink);font-size:16px;outline:0}
+  :is(#items,#loans) .inventory-search:has(a) input::-webkit-search-cancel-button{display:none}
+  :is(#items,#loans) .inventory-filter-button{min-height:48px;padding:8px 10px;gap:5px}
+  :is(#items,#loans) .inventory-scopes,:is(#items,#loans) .inventory-active-filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  :is(#items,#loans) .inventory-scope,:is(#items,#loans) .inventory-active-filters a{
+    display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:4px 9px;
+    border:1px solid var(--line);border-radius:12px;background:var(--paper);
+    color:var(--brown-2);font-weight:700;font-size:13px;text-decoration:none;overflow-wrap:anywhere
+  }
+  :is(#items,#loans) .inventory-scope{padding-inline:7px;gap:4px;font-size:12px}
+  #loans .inventory-scopes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) minmax(0,1.2fr) minmax(0,1fr)}
+  #loans .inventory-scope{flex-direction:column;justify-content:center;gap:2px;padding:4px;min-height:48px;text-align:center}
+  :is(#items,#loans) :is(.inventory-scope[aria-current],.inventory-filter-button.is-active,.inventory-active-filters a){
+    background:var(--gold-soft);border-color:var(--gold);color:var(--brown-2)
+  }
+  :is(#items,#loans) .inventory-count{
+    display:inline-grid;place-items:center;min-width:19px;padding:1px 4px;border-radius:99px;
+    background:var(--cream-2);font-size:11px;font-variant-numeric:tabular-nums
+  }
+  :is(#items,#loans) [aria-current] .inventory-count{background:var(--paper)}
+  .petugas-app :is(#items,#loans) .inventory-results{margin-top:0}
+  :is(#items,#loans) .inventory-list{margin:0;padding:0;list-style:none;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
+  :is(#items,#loans) .inventory-list li{scroll-margin-top:12px}
+  :is(#items,#loans) .inventory-list li+li{border-top:1px solid var(--line)}
+  :is(#items,#loans) .inventory-item-link{
+    display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;
+    min-height:72px;padding:11px 13px;border-radius:12px;color:var(--ink);text-decoration:none
+  }
+  :is(#items,#loans) .inventory-list li:target .inventory-item-link:not(:active){background:var(--gold-soft)}
+  :is(#items,#loans) .inventory-item-link:active{background:var(--cream-2)}
+  :is(#items,#loans) .inventory-thumb{
+    position:relative;display:grid;place-items:center;width:44px;height:44px;overflow:hidden;
+    border:1px solid var(--line);border-radius:11px;background:var(--cream-2);color:var(--brown)
+  }
+  :is(#items,#loans) .inventory-thumb svg{
+    width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round
+  }
+  :is(#items,#loans) .inventory-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--paper)}
+  :is(#items,#loans) .inventory-item-text{display:grid;justify-items:start;gap:3px;min-width:0}
+  :is(#items,#loans) .inventory-item-text .item-name-primary{font:800 16px/1.3 Nunito,sans-serif;overflow-wrap:anywhere}
+  :is(#items,#loans) .inventory-item-meta{font-size:13px;line-height:1.4;color:var(--muted);overflow-wrap:anywhere}
+  :is(#items,#loans) .inventory-item-text .badge{margin-top:2px;font-size:11px}
+  #loans .inventory-loan-status{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;color:var(--muted);font-size:12px}
+  #loans .inventory-loan-status .badge{margin:0}
+  :is(#items,#loans) .inventory-chevron{font-size:25px;color:var(--brown);line-height:1}
+  :is(#items,#loans) .inventory-empty{padding:16px;margin:0}
+  :is(#items,#loans) .inventory-empty h2{font:800 17px/1.35 Nunito,sans-serif;margin:0}
+  :is(#items,#loans) .inventory-empty p{color:var(--muted);margin:6px 0 12px}
+  .petugas-app :is(#items,#loans) .inventory-results>.pager-bar{display:flex;border-top:0;margin-top:6px;padding-inline:0}
+  .petugas-app :is(#items,#loans) .inventory-results:has(.inventory-empty)>.pager-bar,:is(#items,#loans) .inventory-results .pager-perpage{display:none!important}
+  :is(#items,#loans) .inventory-results .pager-summary{display:block}
+  :is(#items,#loans) .inventory-results .pager-controls :is(a,span){min-width:44px;min-height:44px}
+  :is(#detail,#loanDetail) .inventory-mobile.inventory-back{
+    display:inline-flex;align-items:center;gap:6px;min-height:44px;margin:-4px 0 4px;
+    color:var(--brown);font-weight:700;text-decoration:none
+  }
+  :is(#detail,#loanDetail) .inventory-back span{font-size:22px;line-height:1}
+  :is(#items,#loans) :is(a,button):focus-visible,:is(#detail,#loanDetail) .inventory-back:focus-visible{
+    outline:2px solid var(--brown);outline-offset:2px
+  }
+}

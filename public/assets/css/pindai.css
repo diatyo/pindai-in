@@ -1,0 +1,84 @@
+/* Pindai.in — penyesuaian untuk markup server-rendered (anchor/nav) */
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+a.btn.full{display:flex;width:100%}
+a.link{text-decoration:none}
+a.tab{text-decoration:none}
+a.round{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+a.badge{text-decoration:none}
+
+/* Sidebar navigasi (anchors) */
+.nav{display:grid;gap:5px}
+.nav a{display:flex;align-items:center;gap:10px;width:100%;min-height:46px;border:0;background:transparent;color:#cbbdaf;text-align:left;padding:11px 13px;border-radius:12px;font-size:14px;font-weight:600;letter-spacing:0;text-decoration:none}
+.nav a:hover{background:rgba(255,250,242,.08);color:#fff}
+.nav a.active{background:rgba(201,154,66,.16);box-shadow:inset 3px 0 0 var(--gold);color:#f3cf89}
+.nav-icon{display:inline-grid;place-items:center;width:18px;min-width:18px;font-size:14px;line-height:1}
+
+/* Bottom navigation (anchors) */
+.bottom a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;background:transparent;color:#9b8c7e;font-size:9px;text-decoration:none}
+.bottom a.active{color:var(--brown);font-weight:700}
+
+/* Sheet menu (anchors) */
+.sheet-menu a{display:block;text-align:left;text-decoration:none}
+
+/* Kartu status pada dashboard (anchors) */
+a.mobile-status-item{text-decoration:none;color:var(--ink)}
+
+/* Pagination CI4 */
+.pager-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-top:1px solid var(--line)}
+.pager-context{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.pager-summary{color:var(--muted);font-size:13px}
+.pager-summary b{color:var(--ink);font-weight:700}
+.pager-controls{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+.pager-perpage{display:inline-flex;align-items:center;gap:8px;margin:0;flex:0 0 auto}
+.pager-perpage label{color:var(--muted);font-size:13px;font-weight:600;white-space:nowrap}
+.pager-perpage select.control{width:88px;min-width:88px;flex:0 0 auto;min-height:38px;height:38px;padding:6px 34px 6px 12px;font-size:13px;border-radius:10px}
+.pagination{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.pagination li{display:inline-flex}
+.pagination li a,.pagination li>span{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 11px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;line-height:1}
+.pagination li a:hover{border-color:var(--gold);color:var(--brown)}
+.pagination li.active a,.pagination li.active>span{background:var(--brown);color:#fff;border-color:var(--brown)}
+.pagination li.disabled>span{opacity:.4;background:transparent}
+.pagination .pg-edge a,.pagination .pg-edge>span{font-size:19px;font-weight:700}
+@media(max-width:600px){
+  .pager-bar{justify-content:center;gap:8px;padding:10px 12px;text-align:center}
+  .pager-summary{display:none}
+  .pager-context{width:100%;justify-content:center}
+  .pager-controls{display:flex;width:100%;align-items:center;justify-content:center;gap:8px;flex-wrap:nowrap}
+  .pager-perpage{display:inline-flex!important;width:auto!important;align-items:center;flex-direction:row!important;gap:6px;flex:0 0 auto}
+  .pager-perpage label{margin:0;font-size:12px}
+  .pager-perpage select.control{width:68px!important;min-width:68px!important;height:36px!important;min-height:36px!important;padding:5px 28px 5px 10px!important;background-position:right 8px center;background-size:14px}
+  .pagination{flex-wrap:nowrap;gap:5px}
+  .pagination li a,.pagination li>span{min-width:36px;height:36px;padding-inline:8px}
+}
+@media(max-width:380px){.pager-perpage label{display:none}}
+/* Data must remain reachable where legacy pages have no mobile-card markup. */
+@media(max-width:1023px){
+  .petugas-app .table-card:not(:has(.mobile-list)) .table-wrap,
+  .admin-app .table-card:not(:has(.mobile-list)) .table-wrap,
+  .principal-app .table-card:not(:has(.mobile-list)) .table-wrap{display:block}
+  .petugas-app .table-card:not(:has(.mobile-list)) .table,
+  .admin-app .table-card:not(:has(.mobile-list)) .table,
+  .principal-app .table-card:not(:has(.mobile-list)) .table{min-width:680px}
+}
+@media(max-width:1023px){
+  .admin-app #users .table-card:not(:has(.mobile-list)) .table-wrap,
+  .admin-app #activity .table-card:not(:has(.mobile-list)) .table-wrap,
+  .admin-app #teachers .table-card:not(:has(.mobile-list)) .table-wrap,
+  .admin-app #students .table-card:not(:has(.mobile-list)) .table-wrap{display:block}
+}
+@media(min-width:800px) and (max-width:1023px){
+  .admin-app,.principal-app{padding-bottom:92px}
+  .admin-app .top,.principal-app .top{display:flex}
+  .admin-app .bottom,.principal-app .bottom{display:grid}
+}
+@media(max-width:1023px){a.mobile-status-item{display:block}}
+@media(min-width:1024px){a.mobile-status-item{display:grid}}
+
+@media(min-width:1024px){.desktop-main{margin-left:264px;width:calc(100% - 264px)}}
+
+@media(max-width:1023px){
+  :where(.admin-app,.principal-app) .bottom a{min-width:0;min-height:62px;font-size:12px;font-weight:650;color:#51453b;position:relative}
+  :where(.admin-app,.principal-app) .bottom a.active{color:var(--brown-2);font-weight:800;background:var(--gold-soft);border-radius:15px;margin:6px 3px 8px;min-height:54px}
+  :where(.admin-app,.principal-app) .bottom a.active:before{content:'';position:absolute;top:4px;left:50%;width:24px;height:4px;border-radius:999px;background:var(--brown);transform:translateX(-50%)}
+  :where(.petugas-app,.admin-app,.principal-app) .bottom button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+}
