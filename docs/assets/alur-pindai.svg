@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="220" viewBox="0 0 1120 220" role="img" aria-labelledby="title desc">
+  <title id="title">Alur penggunaan Pindai.in</title>
+  <desc id="desc">Pindai QR barang, catat peminjaman, periksa pengembalian, lalu pantau status dan riwayat.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 7 3.5 0 7" fill="none" stroke="#c39743" stroke-width="1.5"/></marker>
+    <g id="card"><rect width="246" height="184" rx="18" fill="#fff7e8" stroke="#c39743" stroke-width="1.5"/><circle cx="123" cy="60" r="30" fill="#f0dfbc"/></g>
+  </defs>
+  <g font-family="Segoe UI,Arial,sans-serif" fill="#392d23" text-anchor="middle">
+    <g transform="translate(24 18)">
+      <use href="#card"/><text x="23" y="30" font-size="14" font-weight="700" fill="#8a672c">01</text>
+      <g transform="translate(105 42)" fill="none" stroke="#5d422e" stroke-width="2.4"><rect x="0" y="0" width="13" height="13" rx="1"/><rect x="23" y="0" width="13" height="13" rx="1"/><rect x="0" y="23" width="13" height="13" rx="1"/><path d="M23 23h6v6h7v7H23v-7M6 4v5M29 4v5M6 27v5"/></g>
+      <text x="123" y="122" font-size="22" font-weight="700">Pindai QR</text><text x="123" y="151" font-size="20">barang</text>
+    </g>
+    <g transform="translate(298 18)">
+      <use href="#card"/><text x="23" y="30" font-size="14" font-weight="700" fill="#8a672c">02</text>
+      <g transform="translate(106 40)" fill="none" stroke="#5d422e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="28" height="35" rx="4"/><path d="M10 4V1h14v3M10 15h14M10 23h14M10 31h9"/></g>
+      <text x="123" y="122" font-size="22" font-weight="700">Catat</text><text x="123" y="151" font-size="20">peminjaman</text>
+    </g>
+    <g transform="translate(572 18)">
+      <use href="#card"/><text x="23" y="30" font-size="14" font-weight="700" fill="#8a672c">03</text>
+      <g transform="translate(105 42)" fill="none" stroke="#5d422e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="34" height="34" rx="7"/><path d="m9 18 6 6 12-13"/></g>
+      <text x="123" y="122" font-size="22" font-weight="700">Periksa</text><text x="123" y="151" font-size="20">pengembalian</text>
+    </g>
+    <g transform="translate(846 18)">
+      <use href="#card"/><text x="23" y="30" font-size="14" font-weight="700" fill="#8a672c">04</text>
+      <g transform="translate(105 42)" fill="none" stroke="#5d422e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="17"/><path d="M18 7v12l8 5"/></g>
+      <text x="123" y="122" font-size="22" font-weight="700">Pantau status</text><text x="123" y="151" font-size="20">dan riwayat</text>
+    </g>
+  </g>
+  <g fill="none" stroke="#c39743" stroke-width="2" marker-end="url(#arrow)"><path d="M276 110h15"/><path d="M550 110h15"/><path d="M824 110h15"/></g>
+</svg>

@@ -47,14 +47,7 @@ menelusuri kondisi, kelengkapan, dan riwayat setiap unit barang.
 
 ## Alur penggunaan
 
-```mermaid
-flowchart LR
-    A["Pindai QR barang"] --> B["Catat peminjaman"]
-    B --> C["Periksa pengembalian"]
-    C --> D["Pantau status dan riwayat"]
-    classDef tahap fill:#fff7e8,stroke:#c39743,color:#392d23,stroke-width:2px;
-    class A,B,C,D tahap;
-```
+![Alur: pindai QR barang, catat peminjaman, periksa pengembalian, lalu pantau status dan riwayat.](docs/assets/alur-pindai.svg)
 
 Petugas memilih guru atau siswa, mengisi detail peminjaman, lalu memeriksa
 kelengkapan yang diserahkan. Saat barang kembali, kondisi dan kelengkapannya
