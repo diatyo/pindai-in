@@ -1,5 +1,7 @@
 # Instalasi dari source
 
+Pindai.in — **SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE**.
+
 Gunakan PHP 8.3/8.4, Composer 2, dan MySQL 8.4. Ekstensi PHP: curl, exif,
 fileinfo, gd, intl, mbstring, mysqli, openssl, zip. Ekstrak source ZIP ke folder
 baru. Paket source tidak membawa vendor, `.env`, database, sesi, atau foto barang.

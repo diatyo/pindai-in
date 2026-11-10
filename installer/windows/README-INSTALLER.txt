@@ -1,4 +1,5 @@
 PINDAI.IN - WINDOWS DESKTOP (BETA)
+SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE
 
 1. Jalankan PindaiIn-Setup-...-win64.exe di Windows 10/11 64-bit.
 2. Jika dibutuhkan, izinkan pemasangan Visual C++ Runtime resmi Microsoft.

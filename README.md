@@ -1,6 +1,6 @@
 # Pindai.in
 
-Sistem peminjaman dan pelacakan inventaris sekolah berbasis QR Code.
+**SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE**.
 Dikembangkan di SMP Negeri 1 Tanjungpinang oleh Dimas Adi Prasetyo.
 CodeIgniter 4, PHP 8.3+, dan MySQL.
 

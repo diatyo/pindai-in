@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Pindai.in",
   "short_name": "Pindai.in",
-  "description": "Peminjaman dan pelacakan inventaris sekolah",
+  "description": "SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE",
   "lang": "id",
   "start_url": "./",
   "scope": "./",

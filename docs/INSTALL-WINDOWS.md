@@ -1,5 +1,7 @@
 # Windows desktop beta
 
+Pindai.in — **SISTEM INFORMASI PEMINJAMAN DAN MONITORING INVENTARIS BARANG BERBASIS WEB DENGAN IDENTIFIKASI QR CODE**.
+
 Unduh installer `.exe` dan `SHA256SUMS.txt` dari GitHub Releases. Repository
 publik menyediakan source ZIP di rilis yang sama dengan installer.
 
