@@ -1,0 +1,90 @@
+:root {
+    color-scheme: light;
+    font-family: system-ui, sans-serif;
+    color: #30271e;
+    background: #f5efe3;
+    line-height: 1.65;
+}
+
+body {
+    margin: 0;
+    padding: clamp(16px, 5vw, 64px) 16px;
+}
+
+.info-card {
+    box-sizing: border-box;
+    max-width: 760px;
+    margin-inline: auto;
+    padding: clamp(20px, 5vw, 48px);
+    border: 1px solid #ded3c3;
+    border-radius: 20px;
+    background: #fdf9f0;
+}
+
+h1, h2, p {
+    margin: 0;
+}
+
+.eyebrow {
+    color: #6f4a10;
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1.15;
+    margin-block: 8px 16px;
+}
+
+h2 {
+    font-size: 1.2rem;
+    line-height: 1.35;
+    margin-bottom: 8px;
+}
+
+.lead {
+    font-size: 1.125rem;
+}
+
+p + p {
+    margin-top: .75rem;
+}
+
+section {
+    margin-top: 1.75rem;
+}
+
+a {
+    color: #734b08;
+    text-underline-offset: .18em;
+}
+
+a:focus-visible {
+    outline: 2px solid #935d00;
+    outline-offset: 4px;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #ded3c3;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #563f2a;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.button:hover {
+    background: #3d2c1c;
+}
