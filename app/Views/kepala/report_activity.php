@@ -6,10 +6,10 @@ $to = $to ?? '';
 $hasFilters = $q !== '' || $module !== '' || $from !== '' || $to !== '';
 $emptyText = $hasFilters ? 'Tidak ada aktivitas yang cocok. Coba kata kunci lain atau ubah filter.' : 'Belum ada aktivitas.';
 ?>
-<?= view('layouts/header', ['title' => 'Riwayat Aktivitas', 'subtitle' => 'Log audit tindakan pengguna sistem.']) ?>
+<?= view('layouts/header', ['title' => 'Riwayat Aktivitas', 'subtitle' => 'Aktivitas akun Anda pada sistem.']) ?>
 <div class="page" id="activity">
   <div class="page-title responsive-page-title">
-    <div><h1>Riwayat Aktivitas</h1><span class="muted">Log audit seluruh pengguna. Akses baca saja.</span></div>
+    <div><h1>Riwayat Aktivitas</h1><span class="muted">Tindakan yang dilakukan oleh akun Anda.</span></div>
   </div>
 
   <form class="card mt-18 activity-filter" method="get" action="<?= base_url('/kepala/activity') ?>">

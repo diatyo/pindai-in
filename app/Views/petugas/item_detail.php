@@ -1,5 +1,6 @@
 <?php
 $readOnly = $readOnly ?? false;
+$active_loan = $active_loan ?? null;
 $isArchived = ! $item->is_active || $item->status === 'disabled';
 $itemTitle = trim($item->item_name);
 $qrDownloadUrl = base_url('/petugas/items/' . $item->id . '/qr-image');

@@ -3,6 +3,7 @@
 namespace App\Controllers\Petugas;
 
 use App\Controllers\BaseController;
+use App\Models\ActivityLogModel;
 
 class Dashboard extends BaseController
 {
@@ -26,8 +27,10 @@ class Dashboard extends BaseController
         ];
         [$data['available_end'], $data['borrowed_end']] = donut_stops($data['total'], $data['available'], $data['borrowed']);
 
-        $data['recent_activities'] = $db->table('activity_logs')
-            ->orderBy('created_at', 'DESC')->limit(5)->get()->getResult();
+        $data['recent_activities'] = model(ActivityLogModel::class)
+            ->filtered(limit: 5, userId: (int) session()->get('user_id'))
+            ->where('role', 'petugas')
+            ->findAll();
 
         $data['active_loans'] = $db->table('loans')
             ->select('loans.*, items.item_code, items.item_name, items.brand, items.model, borrowers.name AS borrower_name, borrowers.type AS borrower_type')

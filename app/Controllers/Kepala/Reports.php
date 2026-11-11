@@ -126,7 +126,8 @@ class Reports extends BaseController
         $from = (string) $this->request->getGet('from');
         $to = (string) $this->request->getGet('to');
 
-        $logs = model('App\Models\ActivityLogModel')->filtered($q, $module ?: null, $from ?: null, $to ?: null, 500)
+        $logs = model('App\Models\ActivityLogModel')->filtered($q, $module ?: null, $from ?: null, $to ?: null, 500, (int) session()->get('user_id'))
+            ->where('role', 'kepala_sekolah')
             ->paginate(per_page(10));
 
         return view('kepala/report_activity', [

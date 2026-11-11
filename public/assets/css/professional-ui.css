@@ -219,6 +219,7 @@
   #loans .loan-filter-grid{grid-template-columns:minmax(300px,1fr) auto;align-items:end}
   #loans .loan-filter-actions{display:flex;align-items:center}
   #loans .loan-filter-actions .btn{min-width:108px;min-height:51px}
+  #loans .toolbar.inventory-desktop{flex-wrap:wrap}
   #loans .toolbar-actions .btn{min-height:44px}
 }
 

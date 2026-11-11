@@ -38,6 +38,8 @@
     <div class="kv"><span>Catatan</span><b><?= esc($loan->return_notes ?? '-') ?></b></div>
   </article>
 
+  <?= view('partials/accessory_loan_detail', ['readOnly' => true]) ?>
+
   <p class="muted mt-14">Portal peminjam bersifat baca saja. Pengembalian barang diproses oleh Pengurus Barang.</p>
   <div class="row mt-14"><a class="btn" href="<?= base_url('/peminjam/history') ?>">Kembali ke riwayat</a></div>
 </div>
@@ -59,5 +61,4 @@
     </div>
   </div>
 </div>
-<?= view('partials/accessory_loan_detail', ['readOnly' => true]) ?>
 <?= view('layouts/footer') ?>

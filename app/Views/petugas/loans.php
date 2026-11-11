@@ -4,6 +4,7 @@ $q = $q ?? '';
 $statusCounts = $status_counts ?? [];
 $statusLabels = ['' => 'Semua', 'ongoing' => 'Aktif', 'late' => 'Terlambat', 'completed' => 'Selesai'];
 $loansUrl = base_url('/petugas/loans');
+$groupCreateUrl = base_url('/petugas/loans/groups/create');
 $perPage = $pager->getPerPage();
 $listFilters = array_filter([
     'q' => $q, 'status' => $status, 'per_page' => $perPage !== 10 ? $perPage : '',
@@ -16,9 +17,9 @@ $detailQuery = '?' . http_build_query(['daftar' => $listFilters + ['page' => $pa
 ?>
 <?= view('layouts/header', ['title' => 'Peminjaman', 'subtitle' => 'Transaksi aktif dan riwayat peminjaman.']) ?>
 <div class="page" id="loans">
-  <div class="page-title responsive-page-title">
+  <div class="page-title responsive-page-title inventory-mobile">
     <div><h1>Peminjaman</h1></div>
-    <a class="btn btn-icon loan-group-start" href="<?= base_url('/petugas/loans/groups/create') ?>"><?= ui_icon('plus', 'btn-svg') ?> Pinjam beberapa unit</a>
+    <a class="btn btn-icon loan-group-start" href="<?= esc($groupCreateUrl) ?>"><?= ui_icon('plus', 'btn-svg') ?> Pinjam beberapa unit</a>
   </div>
 
   <div class="inventory-mobile inventory-controls">
@@ -65,6 +66,7 @@ $detailQuery = '?' . http_build_query(['daftar' => $listFilters + ['page' => $pa
         <?php endforeach; ?>
       </div>
       <div class="toolbar-actions">
+        <a class="btn btn-icon" href="<?= esc($groupCreateUrl) ?>"><?= ui_icon('plus', 'btn-svg') ?> Pinjam beberapa unit</a>
         <a class="btn gold btn-icon" href="<?= base_url('/petugas/scan') ?>"><?= ui_icon('scan', 'btn-svg') ?> Scan QR Barang</a>
       </div>
     </div>

@@ -15,6 +15,7 @@ class Activity extends BaseController
 
         $userId = (int) session()->get('user_id');
         $logs = model(ActivityLogModel::class)->filtered($q, $module ?: null, null, null, 100, $userId)
+            ->where('role', 'petugas')
             ->paginate(per_page(10));
 
         return view('petugas/activity', [
