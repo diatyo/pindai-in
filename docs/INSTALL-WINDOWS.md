@@ -37,6 +37,11 @@ gagal, aplikasi tidak membuka web; simpan log dan cadangan untuk pemulihan.
 Jangan menjalankan versi lama pada database yang sudah dimigrasikan tanpa
 memulihkan cadangannya. Uninstall tidak menghapus folder data.
 
+Admin dapat membuat cadangan aplikasi ke Google Drive dan memilih arsip dari
+Drive, server, atau perangkat saat memulihkan. Ikuti [panduan backup dan
+pemulihan](BACKUP-PEMULIHAN.md). Koneksi Drive memerlukan internet dan akun
+Google yang dapat mengotorisasi aplikasi Pindai.in.
+
 Installer belum ditandatangani sertifikat penerbit, sehingga SmartScreen bisa
 menampilkan peringatan. Cocokkan hash lewat `Get-FileHash <installer> -Algorithm SHA256`.
 Pengujian pada komputer pengembang tidak menggantikan uji Windows bersih.

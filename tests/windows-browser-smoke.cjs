@@ -48,7 +48,12 @@ const { chromium } = playwright;
     assert.equal(response.status(), 200);
     assert.match(response.headers()['content-type'], /application\/pdf/);
     await popup.close();
+    await page.locator('.sidebar').getByRole('link', {name:'Backup & Pemulihan'}).click();
+    await page.getByRole('button', {name:'Hubungkan Google Drive'}).waitFor();
+    await page.getByText('Formulir pemulihan', {exact:true}).click();
+    await page.locator('#restore-file-button').waitFor();
+    assert.equal(await page.locator('#restorePassword').isVisible(), false);
     assert.deepEqual(errors, []);
-    console.log('PASS bundled runtime login, original HD shortcut icon/manifest, school settings, and PDF preview.');
+    console.log('PASS bundled runtime login, HD shortcut icon, PDF preview, and admin backup and restore screen.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

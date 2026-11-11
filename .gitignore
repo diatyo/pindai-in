@@ -152,3 +152,7 @@ _modules/*
 
 /results/
 /phpunit.xml
+
+/writable/backups/
+*.pindai
+client_secret*.json

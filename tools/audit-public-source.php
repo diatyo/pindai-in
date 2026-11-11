@@ -24,7 +24,7 @@ foreach ($iterator as $file) {
     if (! $file->isFile()) continue;
     $relative = str_replace('\\', '/', substr($file->getPathname(), strlen($root) + 1));
     $count++;
-    if ($file->isLink() || preg_match('~(?:^|/)(?:\.env(?:\.[^/]+)?|backups|screenshots|sample-uploads|referensi|bab-v|bab5_screenshots_final)(?:/|$)|\.(?:sql|sqlite3?|db|docx?|pdf|xlsx?|csv|zip|pem|key)$~i', $relative)) {
+    if ($file->isLink() || preg_match('~(?:^|/)(?:\.env(?:\.[^/]+)?|backups|screenshots|sample-uploads|referensi|bab-v|bab5_screenshots_final)(?:/|$)|(?:^|/)client_secret[^/]*\.json$|\.(?:sql|sqlite3?|db|docx?|pdf|xlsx?|csv|zip|pindai|pem|key)$~i', $relative)) {
         $findings[] = ['file' => $relative, 'rule' => 'private-file'];
         continue;
     }

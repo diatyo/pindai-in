@@ -15,6 +15,10 @@ $routes->set404Override('App\Controllers\Errors::show404');
 // Autentikasi
 // ------------------------------------------------------------------
 $routes->get('/', 'Auth::index');
+$routes->post('drive-oauth/channel', 'DriveOAuth::channel');
+$routes->get('drive-oauth/start', 'DriveOAuth::start');
+$routes->get('drive-oauth/result', 'DriveOAuth::result');
+$routes->get('admin/backups/drive/callback', 'DriveOAuth::callback');
 $routes->match(['get', 'post'], 'login', 'Auth::login');
 $routes->get('logout', 'Auth::logout', ['filter' => 'auth']);
 $routes->get('forgot', 'Auth::forgot');
@@ -121,6 +125,14 @@ $routes->get('borrowers/template', 'Admin\Borrowers::template');
     $routes->get('settings', 'Admin\Settings::index');
     $routes->post('settings/save', 'Admin\Settings::save');
     $routes->post('settings/preview', 'Admin\Settings::preview');
+    $routes->get('backups', 'Admin\Backups::index');
+    $routes->post('backups/create', 'Admin\Backups::create');
+    $routes->get('backups/download/(:segment)', 'Admin\Backups::download/$1');
+    $routes->post('backups/upload/(:segment)', 'Admin\Backups::queue/$1');
+    $routes->post('backups/restore', 'Admin\Backups::restore');
+    $routes->post('backups/drive/connect', 'Admin\Backups::connectDrive');
+    $routes->post('backups/drive/poll', 'Admin\Backups::pollDrive');
+    $routes->post('backups/drive/disconnect', 'Admin\Backups::disconnectDrive');
     $routes->get('references', 'Admin\References::index');
     $routes->post('references/save', 'Admin\References::save');
     $routes->post('references/(:num)/toggle', 'Admin\References::toggle/$1');

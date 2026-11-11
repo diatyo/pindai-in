@@ -97,6 +97,7 @@ Contoh ini menggunakan skenario ilustrasi, tanpa data peminjam sekolah.
 | **🔎 Pencarian dan jejak aktivitas** | Cari barang/transaksi dan telusuri aktivitas pengguna untuk membantu pemeriksaan data. |
 | **⚙️ Referensi yang dapat dikelola** | Admin mengatur kategori barang, lokasi penyimpanan, akun, dan data guru/siswa. |
 | **👥 Pembuatan akun massal** | Buat akun guru/siswa sesuai filter secara bertahap, pantau progres, jeda/lanjutkan, dan unduh daftar akun baru. Akun yang sudah ada dilewati. |
+| **Backup dan pemulihan** | Cadangkan database dan foto ke Google Drive. Pulihkan dari Drive, cadangan server, atau file `.pindai` melalui [menu Backup & Pemulihan](docs/BACKUP-PEMULIHAN.md). |
 
 Fitur di atas mengikuti source pada branch `main`. Source dapat memuat pembaruan
 yang belum masuk ke installer pada halaman Releases.

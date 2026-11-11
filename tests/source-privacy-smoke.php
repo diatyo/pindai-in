@@ -18,6 +18,8 @@ try {
     foreach ([
         '.env' => 'password=test',
         'school.csv' => 'synthetic,test',
+        'sample.pindai' => 'synthetic backup content',
+        'client_secret_test.json' => '{"fixture":true}',
         'README.md' => 'ghp_' . str_repeat('A', 36),
         'README.md#person' => 'PRIVATE_FIXTURE_VALUE',
         'README.md#path' => 'C:' . '/Users/' . 'ExamplePerson',
@@ -25,7 +27,7 @@ try {
         $path = $fixture . '/' . explode('#', $name)[0];
         file_put_contents($path, $contents); $check(false); unlink($path);
     }
-    echo "PASS source privacy guard: clean fixture accepted; environment, CSV, token, known-private value, and personal path rejected.\n";
+    echo "PASS source privacy guard: clean fixture accepted; environment, CSV, backup, token, known-private value, and personal path rejected.\n";
 } finally {
     foreach (glob($fixture . '/*') as $file) if (is_file($file)) unlink($file);
     if (is_file($fixture . '/.env')) unlink($fixture . '/.env');

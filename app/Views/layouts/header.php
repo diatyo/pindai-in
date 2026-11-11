@@ -35,6 +35,7 @@ $nav = [
         ['url' => '/admin/references', 'icon' => 'box', 'label' => 'Data Referensi', 'key' => 'references'],
         ['url' => '/admin/activity', 'icon' => 'clock', 'label' => 'Riwayat Aktivitas', 'key' => 'activity', 'divider' => true],
         ['url' => '/admin/settings', 'icon' => 'profile', 'label' => 'Konfigurasi', 'key' => 'settings'],
+        ['url' => '/admin/backups', 'icon' => 'archive', 'label' => 'Backup & Pemulihan', 'key' => 'backups'],
     ],
     'kepala_sekolah' => [
         ['url' => '/kepala', 'icon' => 'home', 'label' => 'Dasbor', 'key' => 'dashboard'],

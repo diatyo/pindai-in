@@ -1,0 +1,357 @@
+#backups {
+  max-width: 1200px;
+}
+
+#backups [hidden] {
+  display: none !important;
+}
+
+.backup-grid {
+  display: grid;
+  gap: 18px;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+#backups .backup-card {
+  min-width: 0;
+  padding: clamp(16px, 2vw, 24px);
+}
+
+#backups h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.backup-service {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backup-service-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.backup-service-name p {
+  margin: 3px 0 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.backup-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--cream-2);
+  color: var(--brown);
+}
+
+#backups .ui-ico {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#backups .backup-icon .ui-ico {
+  width: 21px;
+  height: 21px;
+}
+
+#backups .backup-state {
+  flex-shrink: 0;
+  max-width: 100%;
+  white-space: normal;
+}
+
+#backups .backup-state:not(.green, .amber) {
+  background: var(--cream-2);
+  color: var(--brown);
+}
+
+.backup-description {
+  margin: 14px 0 16px;
+}
+
+.backup-actions,
+.backup-connection-controls,
+.backup-record-actions,
+.backup-record-meta,
+.backup-file {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.backup-actions {
+  align-items: start;
+}
+
+.backup-account[open] {
+  flex-basis: 100%;
+}
+
+.backup-account .backup-connection-controls {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+#backups form {
+  margin: 0;
+}
+
+#backups .btn {
+  min-height: 44px;
+  gap: 6px;
+  white-space: normal;
+}
+
+#backups .backup-disclosure {
+  display: inline-flex;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.backup-restore-panel > .backup-disclosure {
+  width: 100%;
+}
+
+.backup-disclosure::-webkit-details-marker {
+  display: none;
+}
+
+.backup-disclosure::after {
+  content: "";
+  display: inline-block;
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  margin: -3px 3px 0 5px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+details[open] > .backup-disclosure::after {
+  margin-top: 3px;
+  transform: rotate(225deg);
+}
+
+.backup-disclosure:focus-visible,
+.backup-file.is-enhanced input:focus-visible + label {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.backup-notice {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--cream-2);
+  color: var(--brown);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.backup-history-description {
+  margin: 5px 0 14px;
+}
+
+.backup-empty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+}
+
+.backup-empty p {
+  margin: 3px 0 0;
+  font-size: 13px;
+}
+
+.backup-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.backup-record {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.backup-record:last-child {
+  padding-bottom: 0;
+}
+
+.backup-record-info {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.backup-record-meta {
+  margin-top: 5px;
+  font-size: 13px;
+}
+
+.backup-record-error {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #842d22;
+}
+
+.backup-restore-warning {
+  display: flex;
+  align-items: start;
+  gap: 7px;
+  background: #f7e5df;
+  color: #733327;
+}
+
+.backup-restore-panel .field {
+  margin-bottom: 13px;
+}
+
+.backup-restore-fields {
+  min-width: 0;
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.backup-source-chooser legend {
+  margin-bottom: 7px;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+.backup-source-options {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--cream-2);
+}
+
+.backup-source-options label {
+  position: relative;
+  min-width: 0;
+  color: var(--brown);
+  cursor: pointer;
+}
+
+.backup-source-options input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.backup-source-options span {
+  display: grid;
+  min-height: 44px;
+  padding: 4px 5px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.backup-source-options input:checked + span {
+  border-color: var(--brown);
+  background: var(--brown);
+  color: #fff;
+}
+
+.backup-source-options input:focus-visible + span {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.backup-file {
+  position: relative;
+}
+
+.backup-file.is-enhanced input {
+  position: absolute;
+  width: 1px;
+  min-height: 0;
+  height: 1px;
+  padding: 0;
+  opacity: 0;
+}
+
+.backup-file span {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+#backups .backup-restore-submit {
+  color: #842d22;
+  border-color: #ba8a7b;
+}
+
+@media (min-width: 650px) {
+  .backup-record {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .backup-record-actions {
+    justify-content: end;
+  }
+}
+
+@media (min-width: 1180px) {
+  .backup-grid {
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+    grid-template-areas: "drive restore" "history restore";
+    grid-template-rows: auto 1fr;
+  }
+
+  .backup-drive { grid-area: drive; }
+  .backup-history { grid-area: history; }
+  .backup-restore { grid-area: restore; }
+}
+
+@media (max-width: 420px) {
+  .backup-actions > form,
+  .backup-actions > form > .btn,
+  .backup-connection-controls > form,
+  .backup-connection-controls > form > .btn {
+    width: 100%;
+  }
+
+  .backup-service {
+    flex-wrap: wrap;
+  }
+
+  .backup-service-name {
+    min-width: 125px;
+  }
+}

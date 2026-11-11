@@ -44,7 +44,7 @@ $isPath = static fn (string $prefix): bool => $path === $prefix || str_starts_wi
     <a class="<?= $isPath('/admin/users') ? 'active' : '' ?>" href="<?= base_url('/admin/users') ?>"><span class="bottom-icon" aria-hidden="true"><?= ui_icon('users') ?></span>Pengguna</a>
     <a class="<?= $isPath('/admin/teachers') ? 'active' : '' ?>" href="<?= base_url('/admin/teachers') ?>"><span class="bottom-icon" aria-hidden="true"><?= ui_icon('teacher') ?></span>Guru</a>
     <a class="<?= $isPath('/admin/students') ? 'active' : '' ?>" href="<?= base_url('/admin/students') ?>"><span class="bottom-icon" aria-hidden="true"><?= ui_icon('student') ?></span>Siswa</a>
-    <button class="<?= $isPath('/admin/activity') || $isPath('/admin/references') || $isPath('/admin/settings') ? 'active' : '' ?>" type="button" onclick="sheet()"><span class="bottom-icon" aria-hidden="true"><?= ui_icon('dots') ?></span>Lainnya</button>
+    <button class="<?= $isPath('/admin/activity') || $isPath('/admin/references') || $isPath('/admin/settings') || $isPath('/admin/backups') ? 'active' : '' ?>" type="button" onclick="sheet()"><span class="bottom-icon" aria-hidden="true"><?= ui_icon('dots') ?></span>Lainnya</button>
   </nav>
   <div class="sheet" id="moreSheet">
     <div class="sheet-box">
@@ -53,6 +53,7 @@ $isPath = static fn (string $prefix): bool => $path === $prefix || str_starts_wi
         <a class="btn sheet-item" href="<?= base_url('/admin/references') ?>"><?= ui_icon('box','sheet-svg') ?> Data Referensi</a>
         <a class="btn sheet-item" href="<?= base_url('/admin/activity') ?>"><?= ui_icon('clock','sheet-svg') ?> Riwayat Aktivitas</a>
         <a class="btn sheet-item" href="<?= base_url('/admin/settings') ?>"><?= ui_icon('profile','sheet-svg') ?> Konfigurasi</a>
+        <a class="btn sheet-item" href="<?= base_url('/admin/backups') ?>"><?= ui_icon('archive','sheet-svg') ?> Backup &amp; Pemulihan</a>
         <a class="btn danger sheet-item" href="<?= base_url('/logout') ?>"><?= ui_icon('logout','sheet-svg') ?> Keluar</a>
       </div>
     </div>
