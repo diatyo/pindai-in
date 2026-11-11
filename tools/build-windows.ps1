@@ -8,6 +8,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot
+& (Join-Path $PSScriptRoot 'build-icons.ps1')
 $version = (Get-Content (Join-Path $root 'VERSION') -Raw).Trim()
 if ($version -notmatch '^\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?$') { throw 'VERSION tidak valid.' }
 $releaseDir = Join-Path $root 'build/release'
