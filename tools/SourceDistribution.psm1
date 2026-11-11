@@ -1,6 +1,6 @@
 # One allowlist is used by both the public repository and Windows/source packages.
 $RootFiles = @('composer.json','composer.lock','spark','env','LICENSE','README.md','CONTRIBUTORS.md','VERSION','.gitignore','phpunit.dist.xml','SECURITY.md')
-$Docs = @('INSTALL-SOURCE.md','INSTALL-WINDOWS.md','PENGATURAN-KOP-PDF.md','PUBLIC-SOURCE.md','assets/alur-pindai.svg')
+$Docs = @('INSTALL-SOURCE.md','INSTALL-WINDOWS.md','PENGATURAN-KOP-PDF.md','PUBLIC-SOURCE.md','assets/alur-pindai.svg','assets/preview-dashboard.png','assets/preview-loan-mobile.png')
 $Tools = @('build-windows.ps1','build-icons.ps1','SourceDistribution.psm1','audit-public-source.php','export-public-source.ps1','package-directadmin.ps1','zip-directadmin.php','generate-auth-upgrade-sql.php','generate-reference-upgrade-sql.php')
 $Tests = @('accessory-browser-smoke.php','accessory-browser-smoke.cjs','accessory-test-router.php','school-letterhead-browser.cjs','borrower-generator-browser.cjs','windows-installer-smoke.ps1','windows-service-smoke.ps1','windows-browser-smoke.cjs','borrower-classes-browser.cjs','inventory-desktop-browser.cjs','item-duplicate-serial-browser.cjs','loan-tablet-browser.cjs','browser-runtime.cjs','source-privacy-smoke.php','README.md')
 

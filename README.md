@@ -18,6 +18,7 @@
 
 <p align="center">
   <a href="https://github.com/diatyo/pindai-in/releases"><strong>Unduh installer</strong></a>
+  &nbsp;·&nbsp; <a href="#tampilan-aplikasi">Pratinjau</a>
   &nbsp;·&nbsp; <a href="#fitur-utama">Fitur utama</a>
   &nbsp;·&nbsp; <a href="#alur-penggunaan">Alur penggunaan</a>
   &nbsp;·&nbsp; <a href="#mulai-menggunakan">Panduan instalasi</a>
@@ -34,6 +35,24 @@ menelusuri kondisi, kelengkapan, dan riwayat setiap unit barang.
 > **Fokusnya adalah setiap unit fisik.** Dua barang dengan jenis yang sama tetap
 > memiliki identitas QR dan riwayat masing-masing, sehingga petugas dapat
 > mengetahui unit mana yang tersedia, dipinjam, atau perlu ditindaklanjuti.
+
+## Tampilan aplikasi
+
+Dasbor petugas merangkum status inventaris, pinjaman yang perlu ditindaklanjuti,
+dan aktivitas terbaru. Kedua pratinjau di bagian ini menggunakan data contoh.
+
+![Dasbor petugas dengan ringkasan status barang, tugas hari ini, dan aktivitas terbaru.](docs/assets/preview-dashboard.png)
+
+<details>
+<summary><strong>Lihat pratinjau peminjaman di HP</strong></summary>
+
+Petugas mencentang kelengkapan yang ikut diserahkan sebelum menyimpan peminjaman.
+
+<p align="center">
+  <img src="docs/assets/preview-loan-mobile.png" width="360" alt="Checklist kabel daya, kabel HDMI, dan remote pada form peminjaman di HP" />
+</p>
+
+</details>
 
 ## Mengapa Pindai.in?
 

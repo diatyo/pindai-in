@@ -4,6 +4,11 @@ if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
 $root = realpath($argv[1] ?? '') ?: throw new RuntimeException('Folder source tidak ditemukan.');
 $deny = isset($argv[2]) && is_file($argv[2]) ? json_decode(file_get_contents($argv[2]), true, 32, JSON_THROW_ON_ERROR) : [];
 $findings = []; $count = 0;
+// Only the reviewed captures made with synthetic data are allowed in docs.
+$demoPreviews = [
+    'docs/assets/preview-dashboard.png' => 'f13a36ad4ee7660b2eec54772f0d7afb832d684b6297cd4417a6176e52f26f02',
+    'docs/assets/preview-loan-mobile.png' => '5df8b51ea16f38fa86db7509cc2e9a38edde2658990133857f7eef85db731a5d',
+];
 $patterns = [
     'private-key' => '/-----BEGIN (?:[A-Z ]+ )?PRIVATE KEY-----/',
     'github-token' => '/\b(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})\b/',
@@ -29,6 +34,9 @@ foreach ($iterator as $file) {
     }
     $extension = strtolower($file->getExtension());
     if (in_array($extension, ['ttf','woff','woff2','ico','png'], true)) {
+        if (isset($demoPreviews[$relative]) && hash_file('sha256', $file->getPathname()) === $demoPreviews[$relative]) {
+            continue;
+        }
         if (! preg_match('~^public/(?:assets/(?:fonts/[^/]+\.(?:ttf|woff2?)|images/letterhead/(?:city|school)\.png|logo\.png)|(?:favicon|Pindaiin)\.ico)$~i', $relative)) {
             $findings[] = ['file' => $relative, 'rule' => 'unreviewed-binary'];
         }
