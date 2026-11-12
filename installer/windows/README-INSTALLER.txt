@@ -28,7 +28,13 @@ folder program yang sama. Saat pertama dibuka setelah upgrade, aplikasi
 mencadangkan database, foto, logo, dan konfigurasi ke folder data\backups
 sebelum menjalankan migrasi. Cadangkan folder data saat server dihentikan
 ke media lain secara berkala. Cadangan memuat kredensial, simpan secara privat.
-Uninstall mempertahankan folder data. Jangan hapus folder ini bila masih dipakai.
+Saat uninstall, pilih Pertahankan data (pilihan awal) atau Hapus data. Hapus data
+menghapus database, akun, foto, dan cadangan dalam folder data aktif. Arsip
+instal ulang dan cadangan di Google Drive tetap tersedia.
+Jika data dipertahankan, saat instal ulang pilih Gunakan data lama untuk masuk
+dengan akun sebelumnya, atau Siapkan dari awal untuk membuat identitas sekolah
+dan akun admin baru. Siapkan dari awal mengarsipkan data sebelumnya ke
+%PROGRAMDATA%\PindaiIn\data-sebelum-instal-ulang-<tanggal-jam>.
 Service berjalan sebagai LocalService dengan hak terbatas, bukan LocalSystem.
 
 LINGKUP BETA

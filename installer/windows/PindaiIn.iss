@@ -52,6 +52,83 @@ Filename: "{app}\PindaiIn.exe"; Description: "Siapkan dan buka Pindai.in"; Flags
 Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File ""{app}\Install-Service.ps1"" -Action Uninstall"; Flags: runhidden waituntilterminated; RunOnceId: "StopPindai"
 
 [Code]
+var
+  ReinstallPage: TInputOptionWizardPage;
+  RemoveDataOnUninstall: Boolean;
+
+function PindaiDataDir: String;
+begin
+  Result := ExpandConstant('{commonappdata}\PindaiIn\data');
+end;
+
+function HasRetainedData: Boolean;
+begin
+  Result := FileExists(PindaiDataDir + '\pindai-data.marker') and
+    not RegKeyExists(HKLM64, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1B5FCE1A-5C5A-4974-8E85-302FB9A02A36}_is1') and
+    not RegKeyExists(HKLM, 'SYSTEM\CurrentControlSet\Services\PindaiIn');
+end;
+
+procedure InitializeWizard;
+begin
+  ReinstallPage := CreateInputOptionPage(wpSelectDir,
+    'Siapkan Pindai.in setelah instal ulang', 'Pilih data yang akan digunakan',
+    'Pindai.in menemukan data dari instalasi sebelumnya di komputer ini.', True, False);
+  ReinstallPage.Add('Gunakan data lama dan masuk dengan akun yang sudah ada');
+  ReinstallPage.Add('Siapkan dari awal dan simpan data lama sebagai arsip');
+  ReinstallPage.SelectedValueIndex := 0;
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  Result := (PageID = ReinstallPage.ID) and (WizardSilent or not HasRetainedData);
+end;
+
+function IsPlainDirectory(const Directory: String): Boolean;
+var
+  Entry: TFindRec;
+begin
+  Result := False;
+  if FindFirst(Directory, Entry) then
+  begin
+    Result := ((Entry.Attributes and $10) <> 0) and ((Entry.Attributes and $400) = 0);
+    FindClose(Entry);
+  end;
+end;
+
+function DataDirIsOwned(const DataDir: String): Boolean;
+begin
+  Result := IsPlainDirectory(ExtractFileDir(DataDir)) and IsPlainDirectory(DataDir) and
+    FileExists(DataDir + '\pindai-data.marker');
+end;
+
+function ArchiveRetainedData: String;
+var
+  DataDir, ArchiveDir: String;
+begin
+  Result := '';
+  DataDir := PindaiDataDir;
+  if not DataDirIsOwned(DataDir) then
+  begin
+    Result := 'Lokasi data Pindai.in tidak dapat diarsipkan. Pilih Gunakan data lama untuk melanjutkan.';
+    Exit;
+  end;
+  ArchiveDir := DataDir + '-sebelum-instal-ulang-' + GetDateTimeString('yyyymmdd-hhnnss', #0, #0);
+  if RenameFile(DataDir, ArchiveDir) then
+    Log('Data Pindai.in sebelumnya diarsipkan di ' + ArchiveDir)
+  else
+    Result := 'Data Pindai.in belum dapat diarsipkan. Tutup proses yang masih membuka folder data, lalu coba lagi.';
+end;
+
+function StopLocalServer: Boolean;
+var
+  ExitCode: Integer;
+begin
+  Result := Exec(ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'),
+    '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' +
+    ExpandConstant('{app}\Install-Service.ps1') + '" -Action Stop', '', SW_HIDE,
+    ewWaitUntilTerminated, ExitCode) and (ExitCode = 0);
+end;
+
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
   ExitCode: Integer;
@@ -71,7 +148,66 @@ begin
   end;
   if (Result = '') and FileExists(ExpandConstant('{app}\Install-Service.ps1')) then
   begin
-    if not Exec(ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'), '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + ExpandConstant('{app}\Install-Service.ps1') + '" -Action Stop', '', SW_HIDE, ewWaitUntilTerminated, ExitCode) or (ExitCode <> 0) then
+    if not StopLocalServer then
       Result := 'Server Pindai.in belum dapat dihentikan. Tutup aplikasi dan coba lagi sebelum memperbarui.';
   end;
+  if (Result = '') and not NeedsRestart and not WizardSilent and
+    (ReinstallPage.SelectedValueIndex = 1) and HasRetainedData then
+    Result := ArchiveRetainedData;
+end;
+
+function InitializeUninstall: Boolean;
+var
+  Choice: Integer;
+begin
+  Result := True;
+  if UninstallSilent or not DataDirIsOwned(PindaiDataDir) then
+    Exit;
+
+  Choice := TaskDialogMsgBox('Data lokal Pindai.in',
+    'Pilih apa yang ingin dilakukan pada database, akun, foto, dan cadangan di folder data aktif.',
+    mbConfirmation, MB_YESNOCANCEL, ['Pertahankan data'#13#10'Gunakan kembali data dan akun ini saat instal ulang.',
+     'Hapus data'#13#10'Hapus permanen data aktif. Cadangan Google Drive dan arsip instal ulang tetap tersedia.',
+     'Batal'], 0);
+  RemoveDataOnUninstall := Choice = IDNO;
+  Result := (Choice = IDYES) or RemoveDataOnUninstall;
+end;
+
+procedure RemoveLocalData;
+var
+  DataDir, DeleteDir: String;
+begin
+  DataDir := PindaiDataDir;
+  if not DataDirIsOwned(DataDir) or RegKeyExists(HKLM, 'SYSTEM\CurrentControlSet\Services\PindaiIn') then
+  begin
+    MsgBox('Data lokal masih tersimpan. Status layanan atau lokasi data perlu diperiksa.', mbError, MB_OK);
+    Exit;
+  end;
+
+  DeleteDir := DataDir + '-hapus-' + GetDateTimeString('yyyymmdd-hhnnss', #0, #0);
+  if not RenameFile(DataDir, DeleteDir) then
+  begin
+    MsgBox('Folder data masih tersimpan di ' + DataDir + '. Tutup aplikasi yang sedang memakai folder itu.', mbError, MB_OK);
+    Exit;
+  end;
+
+  if not DataDirIsOwned(DeleteDir) or not DelTree(DeleteDir, True, True, True) then
+    MsgBox('Penghapusan belum selesai. Data yang tersisa berada di ' + DeleteDir + '.', mbError, MB_OK);
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if not RemoveDataOnUninstall then
+    Exit;
+
+  if CurUninstallStep = usUninstall then
+  begin
+    if not StopLocalServer then
+    begin
+      RemoveDataOnUninstall := False;
+      MsgBox('Data lokal masih tersimpan karena server Pindai.in belum dapat dihentikan.', mbError, MB_OK);
+    end;
+  end
+  else if CurUninstallStep = usPostUninstall then
+    RemoveLocalData;
 end;
