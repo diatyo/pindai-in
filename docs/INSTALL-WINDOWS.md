@@ -35,7 +35,16 @@ Penyiapan mencadangkan SQL,
 foto, logo, dan konfigurasi sebelum migrasi ketika versi berubah. Jika migrasi
 gagal, aplikasi tidak membuka web; simpan log dan cadangan untuk pemulihan.
 Jangan menjalankan versi lama pada database yang sudah dimigrasikan tanpa
-memulihkan cadangannya. Uninstall tidak menghapus folder data.
+memulihkan cadangannya.
+
+Saat uninstall, pilihan awal **Pertahankan data** menyimpan akun dan database
+lokal. Saat instal ulang, pilih **Gunakan data lama** untuk masuk dengan akun
+sebelumnya atau **Siapkan dari awal** untuk membuat akun Admin baru sambil
+mengarsipkan data sebelumnya.
+
+Pilihan **Hapus data** menghapus database, akun, foto, dan cadangan dalam
+folder data aktif setelah server lokal berhenti. Arsip instal ulang dan cadangan
+di Google Drive tetap tersedia. Instalasi berikutnya membuka penyiapan awal.
 
 Admin dapat membuat cadangan aplikasi ke Google Drive dan memilih arsip dari
 Drive, server, atau perangkat saat memulihkan. Ikuti [panduan backup dan
