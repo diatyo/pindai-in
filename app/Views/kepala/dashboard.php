@@ -1,60 +1,151 @@
-<?= view('layouts/header', ['title' => 'Dasbor Kepala Sekolah', 'subtitle' => 'Kondisi barang, peminjaman, dan penanganan dalam satu tampilan.']) ?>
-<div class="page" id="dashboard">
+<?php
+$subtitle = 'Pantau kesiapan barang dan tindak lanjut.';
+$monthLabel = substr(tgl_id($month_start), 3);
+$loansUrl = '/kepala/reports/loans';
+$monthReport = base_url($loansUrl . '?' . http_build_query(['from' => $month_start, 'to' => $month_end]));
+$attention = [
+    ['label' => 'Peminjaman lewat batas', 'count' => $late_loans, 'icon' => 'clock', 'path' => $loansUrl . '?status=late'],
+    ['label' => 'Unit menunggu kelengkapan', 'count' => $statuses['incomplete'], 'icon' => 'box', 'path' => '/kepala/items?status=incomplete'],
+    ['label' => 'Laporan kerusakan terbuka', 'count' => $open_reports, 'icon' => 'warning', 'path' => '/kepala/reports/damages?status=open'],
+];
+$attention = array_filter($attention, static fn (array $entry): bool => $entry['count'] > 0);
+$statusLabels = [
+    'available'  => 'Tersedia',
+    'borrowed'   => 'Dipinjam',
+    'incomplete' => 'Menunggu kelengkapan',
+    'damaged'    => 'Rusak atau ditangani',
+];
+if ($statuses['other'] > 0) {
+    $statusLabels['other'] = 'Status lain';
+}
+$weekTotal = array_sum($trend);
+$weekPeak = max(1, max($trend));
+$dayLabels = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+?>
+<?= view('layouts/header', ['title' => 'Dasbor Kepala Sekolah', 'subtitle' => $subtitle]) ?>
+<div class="page principal-dashboard" id="dashboard">
   <div class="page-title responsive-page-title">
-    <div><h1>Dasbor Kepala Sekolah</h1><span class="muted">Kondisi barang, peminjaman, dan penanganan dalam satu tampilan.</span></div>
+    <div><h1>Dasbor Kepala Sekolah</h1><span class="muted"><?= esc($subtitle) ?></span></div>
   </div>
 
-  <div class="role-status-strip">
-    <a class="mobile-status-item success" href="<?= base_url('/kepala/items') ?>"><span aria-hidden="true"><?= ui_icon('box','status-svg') ?></span><b><?= $total_units ?></b><small>Total unit</small></a>
-    <a class="mobile-status-item info" href="<?= base_url('/kepala/reports/loans') ?>"><span aria-hidden="true"><?= ui_icon('loan','status-svg') ?></span><b><?= $month_loans ?></b><small>Peminjaman bulan ini</small></a>
-    <a class="mobile-status-item success" href="<?= base_url('/kepala/reports/loans') ?>"><span aria-hidden="true"><?= ui_icon('check','status-svg') ?></span><b><?= $on_time_pct ?>%</b><small>Tepat waktu</small></a>
-    <a class="mobile-status-item overdue" href="<?= base_url('/kepala/reports/damages') ?>"><span aria-hidden="true"><?= ui_icon('warning','status-svg') ?></span><b><?= $need_handling ?></b><small>Perlu penanganan</small></a>
+  <div class="principal-overview" aria-label="Ringkasan inventaris">
+    <a class="card principal-metric" href="<?= esc(base_url('/kepala/items?status=available'), 'attr') ?>">
+      <span class="principal-metric-icon is-available" aria-hidden="true"><?= ui_icon('box', 'status-svg') ?></span>
+      <span class="principal-metric-label">Unit tersedia</span>
+      <strong><?= $statuses['available'] ?></strong>
+      <small>dari <?= $total_units ?> unit aktif</small>
+    </a>
+    <a class="card principal-metric" href="<?= esc($monthReport, 'attr') ?>">
+      <span class="principal-metric-icon is-borrowed" aria-hidden="true"><?= ui_icon('loan', 'status-svg') ?></span>
+      <span class="principal-metric-label">Peminjaman unit bulan ini</span>
+      <strong><?= $month_loans ?></strong>
+      <small><?= esc($monthLabel) ?></small>
+    </a>
+    <a class="card principal-metric" href="<?= esc(base_url($loansUrl . '?status=completed'), 'attr') ?>">
+      <span class="principal-metric-icon" aria-hidden="true"><?= ui_icon('check', 'status-svg') ?></span>
+      <span class="principal-metric-label">Pengembalian tepat waktu</span>
+      <?php if ($on_time_pct !== null): ?>
+        <strong><?= $on_time_pct ?>%</strong>
+        <small><?= $on_time ?> dari <?= $completed ?> pengembalian unit · Semua periode</small>
+      <?php else: ?>
+        <strong class="principal-metric-empty">Belum ada pengembalian</strong>
+        <small>Semua periode</small>
+      <?php endif; ?>
+    </a>
   </div>
 
-  <div class="chart-grid">
-    <article class="card weekly-chart-card">
-      <?php $weekTotal = array_sum($trend); $peak = max($trend); $scaleMax = max(1, $peak); $dayLabels = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']; ?>
-      <div class="section-head"><h2>Peminjaman 7 Hari Terakhir</h2><span class="muted"><?= $weekTotal > 0 ? $weekTotal . ' transaksi' : 'Belum ada transaksi' ?></span></div>
-      <div class="weekly-chart-layout">
-        <div class="weekly-chart-axis" aria-hidden="true"><span></span><div><span><?= $peak ?></span><span><?= $peak > 1 ? (int) ceil($peak / 2) : '' ?></span><span>0</span></div><span></span></div>
-        <div class="chart weekly-chart" role="img" aria-label="Grafik peminjaman tujuh hari terakhir, total <?= $weekTotal ?> transaksi">
-          <?php foreach ($trend as $day => $count): $timestamp = strtotime($day); ?>
-          <div class="weekly-bar-item<?= $day === date('Y-m-d') ? ' is-today' : '' ?><?= $count === 0 ? ' is-zero' : '' ?>" title="<?= esc(tgl_id($day)) ?>: <?= $count ?> transaksi">
-            <span class="weekly-bar-value"><?= $count ?></span>
-            <div class="weekly-bar-track"><span class="bar" style="height:<?= $count > 0 ? max(8, round(($count / $scaleMax) * 100)) : 0 ?>%"></span></div>
-            <small><b><?= $dayLabels[(int) date('w', $timestamp)] ?></b><span><?= date('d/m', $timestamp) ?></span></small>
-          </div>
-          <?php endforeach; ?>
+  <section class="card principal-attention<?= $attention ? ' has-attention' : '' ?>" aria-labelledby="principal-attention-title">
+    <h2 id="principal-attention-title">Perlu perhatian</h2>
+    <?php if ($attention): ?>
+      <ul class="principal-attention-list">
+        <?php foreach ($attention as $entry): ?>
+          <li>
+            <a href="<?= esc(base_url($entry['path']), 'attr') ?>">
+              <span class="principal-attention-icon" aria-hidden="true"><?= ui_icon($entry['icon'], 'status-svg') ?></span>
+              <span><?= esc($entry['label']) ?></span>
+              <strong><?= $entry['count'] ?></strong>
+              <span class="principal-arrow" aria-hidden="true">›</span>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php else: ?>
+      <p class="principal-attention-clear"><span aria-hidden="true"><?= ui_icon('check', 'status-svg') ?></span>Tidak ada masalah yang perlu ditindaklanjuti.</p>
+    <?php endif; ?>
+  </section>
+
+  <div class="principal-dashboard-grid">
+    <section class="card principal-panel" aria-labelledby="principal-status-title">
+      <div class="principal-panel-heading">
+        <h2 id="principal-status-title">Status barang</h2>
+        <a class="link principal-report-link" href="<?= base_url('/kepala/items') ?>">Data barang <span aria-hidden="true">›</span></a>
+      </div>
+      <div class="principal-status-bar" aria-hidden="true">
+        <?php foreach ($statusLabels as $status => $label): ?>
+          <?php if ($statuses[$status] > 0): ?>
+            <span class="is-<?= esc($status, 'attr') ?>" style="flex-grow:<?= $statuses[$status] ?>"></span>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      </div>
+      <dl class="principal-status-rows">
+        <?php foreach ($statusLabels as $status => $label): ?>
+          <div><dt><span class="principal-status-dot is-<?= esc($status, 'attr') ?>" aria-hidden="true"></span><?= esc($label) ?></dt><dd><?= $statuses[$status] ?></dd></div>
+        <?php endforeach; ?>
+      </dl>
+    </section>
+
+    <section class="card principal-panel" aria-labelledby="principal-trend-title">
+      <div class="principal-panel-heading">
+        <div>
+          <h2 id="principal-trend-title">Unit dipinjam per hari</h2>
+          <p class="muted">7 hari terakhir<?= $weekTotal > 0 ? ' · ' . $weekTotal . ' peminjaman unit' : '' ?></p>
         </div>
       </div>
-    </article>
-    <article class="card status-chart-card">
-      <div class="section-head"><h2>Status barang</h2></div>
-      <div class="donut<?= $total_units > 0 ? '' : ' is-empty' ?>" style="--available-end:<?= $available_end ?>%;--borrowed-end:<?= $borrowed_end ?>%"><span><b><?= $total_units ?></b><small>Total unit</small></span></div>
-      <div class="kv"><span><i style="color:var(--gold)">●</i> Tersedia</span><b><?= $available ?></b></div>
-      <div class="kv"><span>Menunggu kelengkapan</span><b><?= (int) ($incomplete ?? 0) ?></b></div>
-      <div class="kv"><span><i style="color:var(--sage)">●</i> Dipinjam</span><b><?= $borrowed ?></b></div>
-      <div class="kv"><span><i style="color:var(--brown)">●</i> Rusak/ditangani</span><b><?= $damaged ?></b></div>
-    </article>
+      <?php if ($weekTotal > 0): ?>
+      <ul class="principal-trend" aria-label="Jumlah peminjaman unit per hari">
+        <?php foreach ($trend as $day => $count): ?>
+          <?php $timestamp = strtotime($day); $isToday = $day === $today; ?>
+          <li class="<?= $isToday ? 'is-today' : '' ?>">
+            <span class="principal-trend-value" aria-hidden="true"><?= $count ?></span>
+            <span class="principal-trend-track" aria-hidden="true">
+              <?php if ($count > 0): ?><span style="height:<?= $count * 100 / $weekPeak ?>%"></span><?php endif; ?>
+            </span>
+            <time datetime="<?= esc($day, 'attr') ?>" aria-label="<?= esc(tgl_id_panjang($day) . ', ' . $count . ' peminjaman unit', 'attr') ?>">
+              <b><?= $isToday ? 'Hari ini' : $dayLabels[(int) date('w', $timestamp)] ?></b>
+              <small><?= date('d/m', $timestamp) ?></small>
+            </time>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+      <?php else: ?>
+        <p class="muted principal-trend-empty">Belum ada peminjaman dalam 7 hari terakhir.</p>
+      <?php endif; ?>
+    </section>
   </div>
 
-  <div class="section-head"><h2>Barang paling sering dipinjam</h2><a class="link" href="<?= base_url('/kepala/reports/loans') ?>">Lihat laporan</a></div>
-  <div class="summary">
-    <?php foreach ($top_items as $i => $t): ?>
-    <article class="card"><span class="badge amber"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></span><h3><?= esc($t->item_name) ?></h3><b><?= esc($t->total) ?></b><small class="muted">transaksi</small></article>
-    <?php endforeach; ?>
-    <?php if (! $top_items): ?><?= view('partials/empty', ['text' => 'Belum ada data.', 'icon' => 'box', 'flush' => true]) ?><?php endif; ?>
-  </div>
-
-  <div class="section-head"><h2>Perlu perhatian</h2></div>
-  <article class="card">
-    <?php foreach ($unhandled as $u): ?>
-    <div class="task-head" style="margin-bottom:10px">
-      <div><span class="badge red"><?= esc($u->item_code) ?></span><b><?= esc($u->item_name) ?></b><br><small class="muted"><?= esc($u->description) ?></small></div>
-      <a href="<?= base_url('/kepala/reports/damages') ?>">&rsaquo;</a>
+  <section class="card principal-panel" aria-labelledby="principal-popular-title">
+    <div class="principal-panel-heading">
+      <div>
+        <h2 id="principal-popular-title">Barang paling sering dipinjam</h2>
+        <p class="muted"><?= esc($monthLabel) ?></p>
+      </div>
+      <a class="link principal-report-link" href="<?= esc($monthReport, 'attr') ?>">Lihat laporan <span aria-hidden="true">›</span></a>
     </div>
-    <?php endforeach; ?>
-    <?php if (! $unhandled): ?><?= view('partials/empty', ['text' => 'Tidak ada laporan belum ditangani.', 'icon' => 'check', 'flush' => true]) ?><?php endif; ?>
-  </article>
+    <?php if ($top_items): ?>
+      <ul class="principal-popular-list">
+        <?php foreach ($top_items as $item): ?>
+          <li>
+            <a href="<?= esc(base_url('/kepala/items/' . $item->id), 'attr') ?>">
+              <span class="principal-popular-item"><b><?= esc($item->item_name) ?></b><small><?= esc($item->item_code) ?></small></span>
+              <span class="principal-popular-count"><strong><?= (int) $item->total ?></strong><small>kali dipinjam</small></span>
+              <span class="principal-arrow" aria-hidden="true">›</span>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php else: ?>
+      <p class="muted principal-popular-empty">Belum ada peminjaman bulan ini.</p>
+    <?php endif; ?>
+  </section>
 </div>
 <?= view('layouts/footer') ?>

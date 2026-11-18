@@ -3,56 +3,69 @@
 namespace App\Controllers\Kepala;
 
 use App\Controllers\BaseController;
+use App\Models\DamageReportModel;
+use DateTimeImmutable;
 
 class Dashboard extends BaseController
 {
     public function index()
     {
         $db = \Config\Database::connect();
-        $monthStart = date('Y-m-01 00:00:00');
-        $monthEnd = date('Y-m-t 23:59:59');
+        $now = new DateTimeImmutable();
+        $today = $now->setTime(0, 0);
+        $monthStart = $today->modify('first day of this month');
+        $monthEnd = $today->modify('last day of this month');
+        $weekStart = $today->modify('-6 days');
 
-        $monthLoans = (int) $db->table('loans')->where('borrowed_at >=', $monthStart)->where('borrowed_at <=', $monthEnd)->countAllResults();
-        $completed = (int) $db->table('loans')->where('returned_at IS NOT NULL')->countAllResults();
-
-        // hitung tepat waktu: returned_at <= due_at
-        $lateReturns = (int) ($db->query('SELECT COUNT(*) AS n FROM loans WHERE returned_at IS NOT NULL AND returned_at > due_at')->getRow()->n ?? 0);
-        $onTime = $completed - $lateReturns;
-        $onTimePct = $completed > 0 ? round(($onTime / $completed) * 100) : 0;
-
-        $data = [
-            'total_units'    => (int) $db->table('items')->where('is_active', 1)->countAllResults(),
-            'available'      => (int) $db->table('items')->where('status', 'available')->where('is_active', 1)->countAllResults(),
-            'borrowed'       => (int) $db->table('items')->where('status', 'borrowed')->where('is_active', 1)->countAllResults(),
-            'damaged'        => (int) $db->table('items')->whereIn('status', ['damaged', 'in_handling'])->where('is_active', 1)->countAllResults(),
-            'month_loans'    => $monthLoans,
-            'on_time_pct'    => $onTimePct,
-            'need_handling'  => (int) $db->table('damage_reports')->whereIn('status', ['reported', 'in_handling'])->countAllResults(),
-            'incomplete' => (int) $db->table('items')->where('status', 'incomplete')->where('is_active', 1)->countAllResults(),
+        $itemsByStatus = $db->table('items')->select('status, COUNT(*) AS total', false)
+            ->where('is_active', 1)->groupBy('status')->get()->getResultArray();
+        $statusCounts = array_column($itemsByStatus, 'total', 'status');
+        $statuses = [
+            'available'  => (int) ($statusCounts['available'] ?? 0),
+            'borrowed'   => (int) ($statusCounts['borrowed'] ?? 0),
+            'incomplete' => (int) ($statusCounts['incomplete'] ?? 0),
+            'damaged'    => (int) ($statusCounts['damaged'] ?? 0) + (int) ($statusCounts['in_handling'] ?? 0),
         ];
-        [$data['available_end'], $data['borrowed_end']] = donut_stops($data['total_units'], $data['available'], $data['borrowed']);
+        $totalUnits = array_sum($statusCounts);
 
-        // tren 7 hari terakhir
+        $monthLoans = $db->table('loans')
+            ->where('borrowed_at >=', $monthStart->format('Y-m-d H:i:s'))
+            ->where('borrowed_at <', $monthEnd->modify('+1 day')->format('Y-m-d H:i:s'));
+        $returns = $db->table('loans')
+            ->select('COUNT(*) AS completed, COUNT(CASE WHEN returned_at <= due_at THEN 1 END) AS on_time', false)
+            ->where('returned_at IS NOT NULL')->get()->getRow();
+        $completed = (int) $returns->completed;
+        $onTime = (int) $returns->on_time;
+
+        $dailyLoans = $db->table('loans')->select('DATE(borrowed_at) AS day, COUNT(*) AS total', false)
+            ->where('borrowed_at >=', $weekStart->format('Y-m-d H:i:s'))
+            ->where('borrowed_at <', $today->modify('+1 day')->format('Y-m-d H:i:s'))
+            ->groupBy('DATE(borrowed_at)', false)->get()->getResultArray();
+        $dailyCounts = array_column($dailyLoans, 'total', 'day');
         $trend = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $d = date('Y-m-d', strtotime("-{$i} days"));
-            $trend[$d] = (int) $db->table('loans')->where('borrowed_at >=', $d . ' 00:00:00')->where('borrowed_at <=', $d . ' 23:59:59')->countAllResults();
+        for ($day = $weekStart; $day <= $today; $day = $day->modify('+1 day')) {
+            $date = $day->format('Y-m-d');
+            $trend[$date] = (int) ($dailyCounts[$date] ?? 0);
         }
-        $data['trend'] = $trend;
 
-        // barang paling sering dipinjam
-        $data['top_items'] = $db->table('loans')
-            ->select('items.item_name, COUNT(loans.id) AS total')
-            ->join('items', 'items.id = loans.item_id')
-            ->groupBy('items.id, items.item_name')
-            ->orderBy('total', 'DESC')->limit(4)->get()->getResult();
-
-        $data['unhandled'] = $db->table('damage_reports')
-            ->select('damage_reports.*, items.item_code, items.item_name')
-            ->join('items', 'items.id = damage_reports.item_id')
-            ->where('damage_reports.status', 'reported')
-            ->limit(5)->get()->getResult();
-
-        return view('kepala/dashboard', $data + ['title' => 'Dasbor']);
+        return view('kepala/dashboard', [
+            'total_units'  => $totalUnits,
+            'statuses'     => $statuses + ['other' => $totalUnits - array_sum($statuses)],
+            'month_start'  => $monthStart->format('Y-m-d'),
+            'month_end'    => $monthEnd->format('Y-m-d'),
+            'today'        => $today->format('Y-m-d'),
+            'month_loans'  => $monthLoans->countAllResults(false),
+            'completed'    => $completed,
+            'on_time'      => $onTime,
+            'on_time_pct'  => $completed > 0 ? (int) round($onTime * 100 / $completed) : null,
+            'late_loans'   => $db->table('loans')->where('returned_at IS NULL')
+                ->where('due_at <', $now->format('Y-m-d H:i:s'))->countAllResults(),
+            'open_reports' => $db->table('damage_reports')->whereIn('status', DamageReportModel::OPEN_STATUSES)->countAllResults(),
+            'trend'        => $trend,
+            'top_items'    => $monthLoans->select('items.id, items.item_code, items.item_name, COUNT(loans.id) AS total', false)
+                ->join('items', 'items.id = loans.item_id')
+                ->groupBy('items.id, items.item_code, items.item_name')->orderBy('total', 'DESC')->orderBy('items.item_code')
+                ->limit(4)->get()->getResult(),
+        ]);
     }
 }

@@ -6,6 +6,8 @@ use CodeIgniter\Model;
 
 class DamageReportModel extends Model
 {
+    public const OPEN_STATUSES = ['reported', 'in_handling'];
+
     protected $table = 'damage_reports';
     protected $primaryKey = 'id';
     protected $returnType = 'object';
@@ -20,7 +22,9 @@ class DamageReportModel extends Model
         if ($q) {
             $this->groupStart()->like('items.item_code', $q)->orLike('damage_reports.description', $q)->groupEnd();
         }
-        if ($status && $status !== 'all') {
+        if ($status === 'open') {
+            $this->whereIn('damage_reports.status', self::OPEN_STATUSES);
+        } elseif ($status && $status !== 'all') {
             $this->where('damage_reports.status', $status);
         }
         return $this->orderBy('damage_reports.discovered_at', 'DESC');

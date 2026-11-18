@@ -57,6 +57,18 @@
         </tbody>
       </table>
     </div>
+    <div class="mobile-list principal-inventory-list">
+      <?php foreach ($items as $item): ?>
+      <article class="mobile-record">
+        <div class="mobile-record-head">
+          <div><h3><?= esc($item->item_name) ?></h3><p><?= esc($item->item_code) ?> · <?= esc($item->location) ?></p></div>
+          <span class="badge <?= item_status_badge($item->status) ?>"><?= item_status_label($item->status) ?></span>
+        </div>
+        <div class="mobile-record-foot mobile-record-foot-end"><a class="link" href="<?= base_url('/kepala/items/' . $item->id) ?>">Lihat detail &rsaquo;</a></div>
+      </article>
+      <?php endforeach; ?>
+      <?php if (! $items): ?><?= view('partials/empty', ['text' => 'Tidak ada unit.', 'icon' => 'box']) ?><?php endif; ?>
+    </div>
     <?= view('partials/pagination') ?>
   </div>
 </div>

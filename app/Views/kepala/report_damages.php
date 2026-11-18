@@ -10,6 +10,7 @@
       <div class="field"><label>Status penanganan</label>
         <select class="control" name="status">
           <option value="">Semua status</option>
+          <option value="open" <?= $status === 'open' ? 'selected' : '' ?>>Laporan terbuka</option>
           <option value="reported" <?= $status === 'reported' ? 'selected' : '' ?>>Dilaporkan</option>
           <option value="in_handling" <?= $status === 'in_handling' ? 'selected' : '' ?>>Dalam penanganan</option>
           <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Selesai</option>
