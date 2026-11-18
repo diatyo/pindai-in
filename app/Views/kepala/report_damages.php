@@ -1,9 +1,36 @@
-<?php $q = $q ?? ''; $status = $status ?? ''; $filtersActive = $q !== '' || $status !== ''; ?>
+<?php
+$q = $q ?? '';
+$status = $status ?? '';
+$filtersActive = $q !== '' || $status !== '';
+$emptyMessage = $filtersActive ? 'Tidak ada laporan kerusakan yang cocok dengan filter.' : 'Belum ada laporan kerusakan yang dibuat.';
+?>
 <?= view('layouts/header', ['title' => 'Laporan Kerusakan', 'subtitle' => 'Kerusakan dan status penanganan.']) ?>
 <div class="page" id="damages">
   <div class="page-title responsive-page-title">
     <div><h1>Laporan Kerusakan</h1><span class="muted">Barang rusak dan tindak lanjut.</span></div>
   </div>
+
+  <?php if ($unitsWithoutReport): ?>
+  <section class="card mt-18" id="unit-rusak" aria-labelledby="unit-rusak-title">
+    <div class="principal-panel-heading">
+      <div>
+        <h2 id="unit-rusak-title"><?= count($unitsWithoutReport) ?> unit rusak tanpa laporan aktif</h2>
+        <p class="muted">Status rusak tercatat di Data Barang. Buka detail unit untuk melihat kondisinya.</p>
+      </div>
+    </div>
+    <ul class="principal-popular-list">
+      <?php foreach ($unitsWithoutReport as $item): ?>
+      <li>
+        <a href="<?= base_url('/kepala/items/' . $item->id) ?>">
+          <span class="principal-popular-item"><b><?= esc($item->item_name) ?></b><small><?= esc($item->item_code) ?></small></span>
+          <small><?= esc($item->condition === 'good' ? item_status_label($item->status) : condition_label($item->condition)) ?></small>
+          <span class="principal-arrow" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </li>
+      <?php endforeach; ?>
+    </ul>
+  </section>
+  <?php endif; ?>
 
   <form class="card mt-18 own-activity-filter" method="get" action="<?= base_url('/kepala/reports/damages') ?>">
     <div class="own-activity-filter-grid">
@@ -14,6 +41,7 @@
           <option value="reported" <?= $status === 'reported' ? 'selected' : '' ?>>Dilaporkan</option>
           <option value="in_handling" <?= $status === 'in_handling' ? 'selected' : '' ?>>Dalam penanganan</option>
           <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Selesai</option>
+          <option value="unrepairable" <?= $status === 'unrepairable' ? 'selected' : '' ?>>Tidak dapat diperbaiki</option>
         </select>
       </div>
       <div class="field"><label>Kata kunci</label>
@@ -31,7 +59,7 @@
 
   <div class="table-card mt-14">
     <div class="report-table-toolbar">
-      <div><b>Data kerusakan</b><small class="muted"><?= count($reports) ?> data ditampilkan</small></div>
+      <div><b>Laporan tercatat</b><small class="muted"><?= count($reports) ?> laporan ditampilkan</small></div>
       <?php if ($reports): ?>
       <a class="btn btn-icon" target="_blank" href="<?= base_url('/kepala/reports/pdf?type=damages&status=' . urlencode($status)) ?>"><?= ui_icon('box', 'btn-svg') ?> Cetak PDF</a>
       <?php endif; ?>
@@ -51,7 +79,7 @@
         <div class="mobile-record-foot mobile-record-foot-end"><a class="link" href="<?= base_url('/kepala/damages/' . $r->id) ?>">Lihat detail &rsaquo;</a></div>
       </article>
       <?php endforeach; ?>
-      <?php if (! $reports): ?><?= view('partials/empty', ['text' => 'Tidak ada laporan kerusakan.', 'icon' => 'warning']) ?><?php endif; ?>
+      <?php if (! $reports): ?><?= view('partials/empty', ['text' => $emptyMessage, 'icon' => 'warning']) ?><?php endif; ?>
     </div>
 
     <div class="table-wrap">
@@ -68,7 +96,7 @@
             <td><div class="row-actions"><a class="row-btn" href="<?= base_url('/kepala/damages/' . $r->id) ?>"><?= ui_icon('search', 'row-btn-icon') ?><span>Lihat</span></a></div></td>
           </tr>
           <?php endforeach; ?>
-          <?php if (! $reports): ?><tr><td colspan="6"><?= view('partials/empty', ['text' => 'Tidak ada laporan kerusakan.', 'icon' => 'warning', 'flush' => true]) ?></td></tr><?php endif; ?>
+          <?php if (! $reports): ?><tr><td colspan="6"><?= view('partials/empty', ['text' => $emptyMessage, 'icon' => 'warning', 'flush' => true]) ?></td></tr><?php endif; ?>
         </tbody>
       </table>
     </div>

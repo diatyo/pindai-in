@@ -89,15 +89,16 @@ class Reports extends BaseController
         $q = (string) $this->request->getGet('q');
         $status = (string) $this->request->getGet('status');
 
-        $reports = model('App\Models\DamageReportModel')->withDetails($status ?: 'all', $q ?: null)
-            ->paginate(per_page(10));
+        $damageReportModel = model('App\Models\DamageReportModel');
+        $reports = $damageReportModel->withDetails($status ?: 'all', $q ?: null)->paginate(per_page(10));
 
         return view('kepala/report_damages', [
-            'title'   => 'Laporan Kerusakan',
-            'reports' => $reports,
-            'pager'   => model('App\Models\DamageReportModel')->pager,
-            'q'       => $q,
-            'status'  => $status,
+            'title'              => 'Laporan Kerusakan',
+            'reports'            => $reports,
+            'unitsWithoutReport' => $damageReportModel->damagedUnitsWithoutCurrentReport(),
+            'pager'              => $damageReportModel->pager,
+            'q'                  => $q,
+            'status'             => $status,
         ]);
     }
 
